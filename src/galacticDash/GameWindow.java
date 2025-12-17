@@ -8,16 +8,22 @@ public class GameWindow extends JFrame  {
 		
 	public GameWindow() {
 		setTitle("Galactic Dash");
-        setSize(500,500);
+        setSize(1500,1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
+
+		StartScreen panel = new StartScreen();
+		
+		add(panel);
+		
 		setVisible(true);
 
-		IPanel panel = new IPanel();
 	}
 	
 	public static void main(String[] args) {
+		
 		new GameWindow();
+		
 	}
 }

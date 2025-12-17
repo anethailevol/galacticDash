@@ -8,18 +8,19 @@ import java.awt.*;
  * November 3, 2025
  * GUI Adding Images Part 2
  */
-public class IPanel extends JPanel {
+public class StartScreen extends JPanel {
 	
-    Image background;
+    ImageIcon background;
 
-    public IPanel() {
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        background = kit.getImage("background.png");
+    public StartScreen() {
+    	        
+        background = new ImageIcon("background.gif");
+        
     }
 
     public void paintComponent(Graphics comp) {
         super.paintComponent(comp);
         Graphics2D comp2D = (Graphics2D) comp;
-        comp2D.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        comp2D.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
     }
 }
