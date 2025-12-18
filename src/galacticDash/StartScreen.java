@@ -4,27 +4,23 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
-/*
- * Athena Arun
- * ICS4U1
- * November 3, 2025
- * GUI Adding Images Part 2
- */
-public class StartScreen extends JPanel{
+
+
+public class StartScreen extends JPanel {
 	
     ImageIcon background;
 
     public StartScreen() {
+    	        
+    	Font pixelFont; //main game font
 
-        Font pixelFont; //main game font
-
-        background = new ImageIcon("assets/images/startScreen.png");
+        background = new ImageIcon("background.gif");
         
         //SET FONT
 
 		try {
 
-		pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
+		pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P.ttf")).deriveFont(18f);
 		GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
 		ge.registerFont(pixelFont);
         
@@ -36,7 +32,7 @@ public class StartScreen extends JPanel{
         setLayout(new BorderLayout());
 
         // Title 
-        JLabel title = new JLabel("Galactic Dash", SwingConstants.CENTER);
+        JLabel title = new JLabel("Galactic Dash");
         title.setFont(pixelFont.deriveFont(Font.PLAIN, 70f));
         title.setForeground(Color.WHITE); 
         add(title, BorderLayout.NORTH);
@@ -56,9 +52,9 @@ public class StartScreen extends JPanel{
 
         // Example actions
         playButton.addActionListener(e -> System.out.println("Play pressed!"));
-        helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructions:\nUse arrow keys to move.\nAvoid obstacles.\nCollect stars!"));
+        helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructions:\nUse arrow keys to move.\nAvoid obstacles & Aliens"));
 
-        
+                
     }
 
     public void paintComponent(Graphics comp) {
@@ -66,6 +62,4 @@ public class StartScreen extends JPanel{
         Graphics2D comp2D = (Graphics2D) comp;
         comp2D.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
     }
-
-
 }
