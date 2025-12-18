@@ -3,7 +3,9 @@ Galactic Dash is a space themed platformer game based on popular platformer game
 
 Fonts:
 https://www.baeldung.com/java-custom-font 
-https://fonts.google.com/selection 
+https://fonts.google.com/selection //FONT
+https://stackoverflow.com/questions/5652344/how-can-i-use-a-custom-font-in-java 
+https://docs.oracle.com/javase/tutorial/2d/text/fonts.html 
 
 JOptionPane:
 https://www.geeksforgeeks.org/java/java-joptionpane/
