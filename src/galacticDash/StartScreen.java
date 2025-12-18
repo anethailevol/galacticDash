@@ -56,6 +56,7 @@ public class StartScreen extends JPanel{
 
         // Example actions
         playButton.addActionListener(e -> System.out.println("Play pressed!"));
+        
         helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructions:\nUse arrow keys to move.\nAvoid obstacles.\nCollect stars!"));
 
         
