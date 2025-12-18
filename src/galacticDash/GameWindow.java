@@ -12,13 +12,11 @@ public class GameWindow extends JFrame  {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
-
-		StartScreen panel = new StartScreen();
 		
-		add(panel);
-		
+		//Start Screen
+		StartScreen panel1 = new StartScreen();
+		add(panel1);
 		setVisible(true);
-
 	}
 	
 	public static void main(String[] args) {
