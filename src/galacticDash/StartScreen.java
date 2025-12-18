@@ -18,7 +18,7 @@ public class StartScreen extends JPanel{
 
         Font pixelFont; //main game font
 
-        background = new ImageIcon("assets/images/startScreen.png");
+        background = new ImageIcon("assets/images/background.gif");
         
         //SET FONT
 
