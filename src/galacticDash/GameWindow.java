@@ -1,6 +1,12 @@
 package galacticDash;
-
 import javax.swing.*;
+/*
+ * Athena Arun, Mithushaa Rajakumar
+ * ICS4U1
+ * January 12, 2025
+ * Galactic Dash - Game WIndow
+ */
+
 //import java.awt.*;
 //import java.awt.event.* ;
 

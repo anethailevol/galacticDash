@@ -1,15 +1,15 @@
 package galacticDash;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 /*
- * Athena Arun
+ * Athena Arun, Mithushaa Rajakumar
  * ICS4U1
- * November 3, 2025
- * GUI Adding Images Part 2
+ * January 12, 2025
+ * Galactic Dash - Start Screen
  */
+
 public class StartScreen extends JPanel{
 	
     ImageIcon background;
