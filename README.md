@@ -9,3 +9,6 @@ https://docs.oracle.com/javase/tutorial/2d/text/fonts.html
 
 JOptionPane:
 https://www.geeksforgeeks.org/java/java-joptionpane/
+
+Cat Gif:
+https://tenor.com/view/glorp-cat-alien-dance-gif-702725459712104069

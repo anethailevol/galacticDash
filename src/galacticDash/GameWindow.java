@@ -11,16 +11,16 @@ import javax.swing.*;
 //import java.awt.event.* ;
 
 public class GameWindow extends JFrame  {
-	
 
+	//game window constructor
 	public GameWindow() {
 		setTitle("Galactic Dash");
-        setSize(1500, 800);
+		setSize(1500, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		
-	
+
+
 		//Start Screen
 		StartScreen panel1 = new StartScreen();
 
@@ -28,10 +28,11 @@ public class GameWindow extends JFrame  {
 
 		setVisible(true);
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		GameWindow frame = new GameWindow();
-		
-	}
-}
+
+	}//end of main method
+
+}//end of class
