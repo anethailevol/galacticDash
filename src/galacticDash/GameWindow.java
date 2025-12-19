@@ -1,16 +1,17 @@
 package galacticDash;
 import javax.swing.*;
-/*
- * Athena Arun, Mithushaa Rajakumar
+import java.awt.*;
+/* Athena Arun, Mithushaa Rajakumar
  * ICS4U1
  * January 12, 2025
  * Galactic Dash - Game WIndow
  */
 
-//import java.awt.*;
 //import java.awt.event.* ;
 
 public class GameWindow extends JFrame  {
+	private CardLayout cardLayout;
+	private JPanel mainPanel;
 
 	//game window constructor
 	public GameWindow() {
@@ -20,19 +21,28 @@ public class GameWindow extends JFrame  {
 		setResizable(false);
 		setLocationRelativeTo(null);
 
+		cardLayout = new CardLayout();
+		mainPanel = new JPanel(cardLayout);
 
 		//Start Screen
-		StartScreen panel1 = new StartScreen();
+		StartScreen panel1 = new StartScreen(this);
 
-		add(panel1);
+		//game screen
+		GamePanel panel2 = new GamePanel(this);
 
+		mainPanel.add(panel1, "start");
+		mainPanel.add(panel2, "game");
+
+		add(mainPanel);
 		setVisible(true);
 	}
 
+	public void showScreen(String name){
+		cardLayout.show(mainPanel, name);
+	}
+	
 	public static void main(String[] args) {
-
 		GameWindow frame = new GameWindow();
-
 	}//end of main method
 
 }//end of class
