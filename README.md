@@ -12,3 +12,6 @@ https://www.geeksforgeeks.org/java/java-joptionpane/
 
 Cat Gif:
 https://tenor.com/view/glorp-cat-alien-dance-gif-702725459712104069
+
+Cat Spinning Gif:
+https://tenor.com/view/glorp-spin-360-gif-360-glorp-spin-gif-14999783910999808419
