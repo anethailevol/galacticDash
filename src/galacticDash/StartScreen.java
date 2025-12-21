@@ -11,62 +11,64 @@ import javax.swing.*;
  */
 
 public class StartScreen extends JPanel{
-	
-    ImageIcon background;
+	private GameWindow window;//reference main window
 
-    public StartScreen() {
+	ImageIcon background;
 
-        Font pixelFont; //main game font
+	//constructor
+	public StartScreen(GameWindow window) {
+		this.window = window;
+		Font pixelFont; //main game font
 
-        background = new ImageIcon("assets/images/background.gif");
-        
-        //SET FONT
+		background = new ImageIcon("assets/images/background.gif");
+
+		//SET FONT
 
 		try {
 
-		pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
-		GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
-		ge.registerFont(pixelFont);
-        
+			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
+			GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(pixelFont);
+
 		} 
 
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
-        
-        //setLayout
-        setLayout(new BorderLayout());
 
-        // Title 
-        JLabel title = new JLabel("Galactic Dash", SwingConstants.CENTER);
-        title.setFont(pixelFont.deriveFont(Font.PLAIN, 70f));
-        title.setForeground(Color.WHITE); 
-        add(title, BorderLayout.NORTH);
+		//setLayout
+		setLayout(new BorderLayout());
 
-        // Button panel
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(false); // transparent so background shows through
-        buttonPanel.setLayout(new FlowLayout());
+		// Title 
+		JLabel title = new JLabel("Galactic Dash", SwingConstants.CENTER);
+		title.setFont(pixelFont.deriveFont(Font.PLAIN, 70f));
+		title.setForeground(Color.WHITE); 
+		add(title, BorderLayout.NORTH);
 
-        JButton playButton = new JButton("Play");
-        JButton helpButton = new JButton("Help");
+		// Button panel
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setOpaque(false); // transparent so background shows through
+		buttonPanel.setLayout(new FlowLayout());
 
-        buttonPanel.add(playButton);
-        buttonPanel.add(helpButton);
+		JButton playButton = new JButton("Play");
+		JButton helpButton = new JButton("Help");
 
-        add(buttonPanel, BorderLayout.SOUTH);
+		//adding buttons to panel
+		buttonPanel.add(playButton);
+		buttonPanel.add(helpButton);
 
-        // Example actions
-        playButton.addActionListener(e -> System.out.println("Play pressed!"));
-        
-        helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructions:\nUse arrow keys to move.\nAvoid obstacles.\nCollect stars!"));
+		add(buttonPanel, BorderLayout.SOUTH);
 
-        
-    }
+		// Example actions
+		playButton.addActionListener(e -> System.out.println("Play pressed!"));
+		playButton.addActionListener(e -> window.showScreen("game"));
 
-    public void paintComponent(Graphics comp) {
-        super.paintComponent(comp);
-        Graphics2D comp2D = (Graphics2D) comp;
-        comp2D.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
-    }
+		helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructions:\nUse arrow keys to move.\nAvoid obstacles.\nCollect stars!"));
+	}
+
+	public void paintComponent(Graphics comp) {
+		super.paintComponent(comp);
+		Graphics2D comp2D = (Graphics2D) comp;
+		comp2D.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
+	}
 
 
 }
