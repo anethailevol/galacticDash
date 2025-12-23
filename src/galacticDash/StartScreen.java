@@ -25,11 +25,9 @@ public class StartScreen extends JPanel{
 		//SET FONT
 
 		try {
-
 			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
 			GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(pixelFont);
-
 		} 
 
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
@@ -60,7 +58,6 @@ public class StartScreen extends JPanel{
 		// Example actions
 		playButton.addActionListener(e -> System.out.println("Play pressed!"));
 		playButton.addActionListener(e -> window.showScreen("game"));
-
 		helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructions:\nUse arrow keys to move.\nAvoid obstacles.\nCollect stars!"));
 	}
 
