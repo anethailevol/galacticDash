@@ -9,7 +9,6 @@ import javax.swing.*;
  */
 
 public class GamePanel extends JPanel {
-	
 	private GameWindow window;
 
 	//constructor
@@ -18,7 +17,6 @@ public class GamePanel extends JPanel {
 		setBackground(Color.LIGHT_GRAY);//temp colour
 		setLayout(null);
 		setFocusable(true);
-		
 	}
 
 
