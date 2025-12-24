@@ -11,12 +11,14 @@ import javax.swing.*;
  */
 
 public class StartScreen extends JPanel{
+	
 	private GameWindow window;//reference main window
 
 	ImageIcon background;
 
 	//constructor
 	public StartScreen(GameWindow window) {
+		
 		this.window = window;
 		Font pixelFont; //main game font
 
@@ -58,7 +60,6 @@ public class StartScreen extends JPanel{
 		add(buttonPanel, BorderLayout.SOUTH);
 
 		// Example actions
-		playButton.addActionListener(e -> System.out.println("Play pressed!"));
 		playButton.addActionListener(e -> window.showScreen("game"));
 
 		helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructions:\nUse arrow keys to move.\nAvoid obstacles.\nCollect stars!"));
