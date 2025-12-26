@@ -13,11 +13,18 @@ import java.awt.event.*;
 public class GamePanel extends JPanel implements ActionListener{
 	private GameWindow window;//game window panel
 	private Image glorpCat;//cat sprite 1
+	private Image glorpSpin;//cat sprite 2
 
 	//cat position and velocity
 	private int catX = 200;
-	private int catY = 200;
-	private int catSpeed = 3;
+	private int catSpeed = 3;//speed for left right
+
+	//jumping (y) variables
+	private int catY;
+	private int yVelocity = 0;
+	private int gravity = 1;//gravity velocity
+	private boolean onGround = true;//checking if sprite on ground
+	private int groundY = 450;//ground level
 
 	private Input input;//input
 
@@ -28,9 +35,15 @@ public class GamePanel extends JPanel implements ActionListener{
 		setLayout(null);
 		setFocusable(true);
 
+		catY = groundY;//starting cat position on ground
+
 		//importing cat
 		ImageIcon glorp1 = new ImageIcon("assets/images/glorp-cat.gif");
 		glorpCat = glorp1.getImage();
+
+		//import cat spin
+		ImageIcon glorp2 = new ImageIcon("assets/images/glorp-spin.gif");
+		glorpSpin = glorp2.getImage();
 
 		//adding input
 		input = new Input();
@@ -45,14 +58,25 @@ public class GamePanel extends JPanel implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent e) {
 		//movement
-		if(input.left)
+		if(input.left)//left
 			catX -= catSpeed;
-		if(input.right)
+		if(input.right)//right
 			catX += catSpeed;
-		if(input.up)
-			catY -= catSpeed;
-		if(input.down)
-			catY += catSpeed;
+
+		if (input.jump && onGround){//jumping if sprite on ground
+			yVelocity = -20;//jump amount
+			onGround = false;
+		}//end of if
+
+		//gravity
+		yVelocity += gravity;
+		catY += yVelocity;
+
+		if (catY >= groundY){//sprite touches ground
+			catY = groundY;
+			yVelocity = 0;
+			onGround = true;
+		}//end of if
 
 		repaint();
 		requestFocusInWindow();
@@ -60,7 +84,12 @@ public class GamePanel extends JPanel implements ActionListener{
 
 	public void paintComponent(Graphics comp) {
 		super.paintComponent(comp);
-		comp.drawImage(glorpCat, catX, catY, null);//drawing cat sprite
-	}
-
+		if (onGround){
+			comp.drawImage(glorpCat, catX, catY, null);//default sprite
+		}//end of if 
+		else{
+			comp.drawImage(glorpSpin, catX, catY, 70, 70, null);//jump sprite, scaled
+		}//end of else
+	}//end of paintComponent
+	
 }//end of class
