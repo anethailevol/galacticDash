@@ -9,7 +9,7 @@ import java.awt.event.KeyListener;
  */
 
 public class Input implements KeyListener {
-    public boolean up, down, left, right;//arrow keys and WASD for movement
+    public boolean jump, left, right;//arrow keys and WAD for movement, and space
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();//key clicked
@@ -20,11 +20,9 @@ public class Input implements KeyListener {
         if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D)//right
             right = true;
 
-        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W)//up
-            up = true;
+        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W || key == KeyEvent.VK_SPACE)//jump
+            jump = true;
 
-        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S)//down
-            down = true;
     }//end of key pressed
 
     public void keyReleased(KeyEvent e) {
@@ -36,11 +34,8 @@ public class Input implements KeyListener {
         if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D)//right
             right = false;
 
-        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W)//up
-            up = false;
-
-        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S)//down
-            down = false;
+        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W || key == KeyEvent.VK_SPACE)//jump
+            jump = false;
     }//end of key released
 
     public void keyTyped(KeyEvent e) {}//temp, required by interface
