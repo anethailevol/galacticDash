@@ -44,8 +44,9 @@ public class GameWindow extends JFrame  {
 	public void showScreen(String name){
 		cardLayout.show(mainPanel, name);
 		if ("game".equals(name)) {
-            panel2.requestFocusInWindow();
-        }//end of if
+			panel2.startGame();//only start game when clicked
+			panel2.requestFocusInWindow();
+		}//end of if
 	}
 
 
