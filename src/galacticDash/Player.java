@@ -53,7 +53,7 @@ public class Player {
 	public void draw(Graphics g) {
 		AnimatedAction action = behaviour.actions.get(currentAction);
 		if (action != null){
-			g.drawImage(action.animation, x, y, null);//not scaled, add dimensions if needed
+			g.drawImage(action.animation, x, y, 120, 120, null);//scaled for boundaries
 		}
 	}
 
