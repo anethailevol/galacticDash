@@ -12,68 +12,68 @@ public class GamePanel extends JPanel {
 	private GameWindow window;
 	private Input input;
 	private Player player;   
+	ImageIcon gameBackground;
 
 	//constructor
 	public GamePanel(GameWindow window){
 		this.window = window;
-		setBackground(Color.LIGHT_GRAY);//temp colour
+		gameBackground = new ImageIcon("assets/images/gamebg.gif");
 		setLayout(null);
 		setFocusable(true);
-		setOpaque(false);//to ensure transparent sprite
-		
 		input = new Input();
-	    addKeyListener(input);
-	    setFocusable(true);
-	    requestFocusInWindow();
+		addKeyListener(input);
+		setFocusable(true);
+		requestFocusInWindow();
 
-	    player = new Player(200, 300);
-	    Timer timer = new Timer(30, e ->{//game loop using swing timer
-            update();
-            repaint();
-        });
-        timer.start();
-    }
+		player = new Player(200, 300);
+		Timer timer = new Timer(15, e ->{//game loop using swing timer
+			update();
+			repaint();
+		});
+		timer.start();
+	}
 
-	
+
 	public void update() {
 
-	    if (input.left) {
-	        player.x -= 5;
-	        player.setAction("run");
-	    }
+		if (input.left) {
+			player.x -= 5;
+			player.setAction("run");
+		}
 
-	    else if (input.right) {
-	        player.x += 5;
-	        player.setAction("run");
-	    }
-	    else{
-	    	player.setAction("idle");
-	    }
+		else if (input.right) {
+			player.x += 5;
+			player.setAction("run");
+		}
+		else{
+			player.setAction("idle");
+		}
 
-	    if (input.jump) {
-	        player.jump();//calling jump
-	        player.setAction("jump");
-	    }
+		if (input.jump) {
+			player.jump();//calling jump
+			player.setAction("jump");
+		}
 
-	    
-	    //gravity
-	    player.velocity += 1;//gravity amount
-	    player.y += player.velocity;//apply velocity to player
 
-	    if (player.y >= player.groundY){//checking is player on ground
-	        player.y = player.groundY;
-	        player.velocity = 0;
-	        player.onGround = true;
-	        if (!input.left && !input.right){
-	            player.setAction("idle");
-	        }
-	    }
+		//gravity
+		player.velocity += 1;//gravity amount
+		player.y += player.velocity;//apply velocity to player
 
-	}
-	
+		if (player.y >= player.groundY){//checking is player on ground
+			player.y = player.groundY;
+			player.velocity = 0;
+			player.onGround = true;
+			if (!input.left && !input.right){
+				player.setAction("idle");
+			}
+		}
+	}//end of update
+
 	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-	    player.draw(g);
+		super.paintComponent(g);
+		Graphics2D comp2D = (Graphics2D) g;
+		comp2D.drawImage(gameBackground.getImage(), 0, 0, getWidth(), getHeight(), this);//draw bg
+		player.draw(g);
 	}
 
 }//end of class

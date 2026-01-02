@@ -20,7 +20,7 @@ public class Player {
 		//playerBehaviour.actions.put("die", new AnimatedAction("skeleton-death.gif", 1000));
 		playerBehaviour.actions.put("idle", new AnimatedAction("assets/images/glorp-cat.gif", 500));
 		playerBehaviour.actions.put("run", new AnimatedAction("assets/images/glorp-spin.gif", 500));
-		playerBehaviour.actions.put("jump", new AnimatedAction("assets/images/glorp-jump.gif", 500));
+		playerBehaviour.actions.put("jump", new AnimatedAction("assets/images/glorp-spin.gif", 500));
 	}
 
 	int x, y;
@@ -40,7 +40,7 @@ public class Player {
 
 	public void jump() {
 	    if (onGround){
-	        velocity = -20;//jumping strength
+	        velocity = -23;//jumping strength
 	        onGround = false;
 	    }
 	}
