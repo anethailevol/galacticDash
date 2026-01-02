@@ -2,7 +2,6 @@ package galacticDash;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -82,8 +81,18 @@ public class GamePanel extends JPanel {
 		timer.start();//game timer
 		timeElapsedTimer.start();//elapsed timer (display)
 	}
+	
+	public void endGame() {
+	    timer.stop();
+	    timeElapsedTimer.stop();
+	    window.resetGame();
+	}
 
 	public void update() {
+		if (input.menu){//if menu clicked
+		    endGame();
+		    return;//stop updating frame
+		}
 
 		if (input.left) {
 			player.x -= 5;
@@ -163,12 +172,13 @@ public class GamePanel extends JPanel {
 		player.draw(g);
 
 		g.setColor(Color.WHITE);
-		g.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
+		g.setFont(pixelFont.deriveFont(Font.PLAIN, 15f));
 		//converting into minutes and seconds
 		int minutes = elapsedTime/60;
 		int seconds = elapsedTime%60;
 		String timeAnalog = String.format("%02d:%02d", minutes, seconds);
-		g.drawString("Time: " + timeAnalog, 10, 40);
+		g.drawString("Time: " + timeAnalog, 10, 30);
+		g.drawString("Click 'M' for menu", 1200, 30);
 
 	}
 

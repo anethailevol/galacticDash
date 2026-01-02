@@ -49,5 +49,12 @@ public class GameWindow extends JFrame  {
 		}//end of if
 	}
 
+	public void resetGame(){
+	    mainPanel.remove(panel2);
+	    panel2 = new GamePanel(this);
+	    mainPanel.add(panel2, "game");
+	    showScreen("start");
+	}
+
 
 }//end of class
