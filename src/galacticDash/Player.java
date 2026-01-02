@@ -27,7 +27,7 @@ public class Player {
 	int width, height;
 	int velocity = 0;//vertical velocity
 	int groundY = 638;//ground level
-	boolean onGround = true;//check if player on ground
+	boolean onGround = false;//check if player on ground
 	String currentAction;
 	final UnitBehaviour behaviour;
 	boolean flip;

@@ -45,7 +45,7 @@ public class GamePanel extends JPanel {
 		setFocusable(true);
 		requestFocusInWindow();
 
-		player = new Player(200, 638);
+		player = new Player(200, 510);
 
 		timer = new Timer(15, e ->{//game loop using swing timer
 			update();
@@ -68,7 +68,6 @@ public class GamePanel extends JPanel {
 		//add platforms
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
 
@@ -78,6 +77,9 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
 		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
 
+		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
 	}
 
 	public void startGame() {
@@ -122,17 +124,17 @@ public class GamePanel extends JPanel {
 		player.y += player.velocity;//apply velocity to player
 
 		player.onGround = false;//asume sprite falling
-
+		boolean voided = false;
+		
 		//PLATFORM COLLISION
 		for (Platform p : platforms){
 			Rectangle playerBounds = player.getBounds();
 			Rectangle platformBounds = p.getBounds();
 
 			if (playerBounds.intersects(platformBounds)){//if the player and platform overlap
-
+				
 				if (player.velocity > 0){//only works if player falling
 					int platformTop = p.y;
-
 					boolean abovePlatform = previousY + player.height <= platformTop;//if player above platform
 					boolean feetOnPlatform = player.y + player.height >= platformTop;//if playet feet reaches/passes top
 
@@ -140,22 +142,27 @@ public class GamePanel extends JPanel {
 						player.y = platformTop - player.height;//player goes to top of platform
 						player.velocity = 0;
 						player.onGround = true;
-					}//end of both true
-					
-				}//end of falling player
-			}//end of intersection
-		}//end of loop
-
-
-
-		int feet = player.y + player.height;//sprite bottom
-		if (!player.onGround && feet >= player.groundY){//checking if sprite is on ground
-			player.y = player.groundY - player.height;
-			player.velocity = 0;
-			player.onGround = true;
+					}
+				}
+			}
 		}
 
+		//TEMP--> changing ground level to 0 for void
+		int groundY = 800;
+		if (!player.onGround){
+		    int feet = player.y + player.height;//sprite bottom
+		    if (feet >= groundY){//checking if sprite is on ground
+		        player.y = groundY - player.height;
+		        player.velocity = 0;
+		        player.onGround = true;
+		        voided = true;
+		    }
+		}
 
+		if(voided == true){
+			endGame();
+		}
+		
 		//Scrolling mechanism
 		bgX1 -= scrollSpeed;
 		bgX2 -= scrollSpeed;
@@ -175,7 +182,7 @@ public class GamePanel extends JPanel {
 			bgX2 = bgX1 + bg1.getWidth(null);
 		}
 
-	}
+	}//end of update
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
