@@ -55,8 +55,13 @@ public class GamePanel extends JPanel {
         longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
         tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
         
-        platforms.add(new Platform(0, 600, 400, 180, longPlatform));
-        platforms.add(new Platform(0, 300, 120, 80, tallPlatform));
+        platforms.add(new Platform(0, 628, 400, 180, longPlatform));
+        platforms.add(new Platform(398, 628, 400, 180, longPlatform));
+        platforms.add(new Platform(398, 628, 400, 180, longPlatform));
+        platforms.add(new Platform(796, 628, 400, 180, longPlatform));
+        platforms.add(new Platform(1194, 628, 400, 180, longPlatform));
+
+        platforms.add(new Platform(1720, 500, 250, 160, tallPlatform));
     }
 
 	
@@ -96,6 +101,11 @@ public class GamePanel extends JPanel {
 	    //Scrolling mechanism
 	    bgX1 -= scrollSpeed;
 	    bgX2 -= scrollSpeed;
+	    
+	    //platform scroll
+	    for (Platform p : platforms){
+	        p.x -= scrollSpeed;
+	    }
 
 	 // If bg1 goes off screen, move it to the right of bg2
 	    if (bgX1 + bg1.getWidth(null) <= 0) {

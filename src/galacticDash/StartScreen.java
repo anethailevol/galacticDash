@@ -49,7 +49,6 @@ public class StartScreen extends JPanel{
 		buttonPanel.setOpaque(false); // transparent so background shows through
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));//vertical layout for buttons
 
-		
 		JButton playButton = new JButton("Play");
 		JButton helpButton = new JButton("Help");
 
