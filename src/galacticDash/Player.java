@@ -26,7 +26,7 @@ public class Player {
 	int x, y;
 	int width, height;
 	int velocity = 0;//vertical velocity
-	int groundY = 500;//ground level
+	int groundY = 638;//ground level
 	boolean onGround = true;//check if player on ground
 	String currentAction;
 	final UnitBehaviour behaviour;
@@ -37,11 +37,9 @@ public class Player {
 		currentAction = "idle";
 		behaviour = playerBehaviour;
 
-		//getting width and height of sprite
-		AnimatedAction action = behaviour.actions.get(currentAction);
-		width = action.animation.getWidth(null);
-		height = action.animation.getHeight(null);
-
+		//fixed width and height of sprite
+		width = 128;
+		height = 128;
 
 		flip = false;
 	}
@@ -55,9 +53,8 @@ public class Player {
 
 	public void setAction(String action){//tells player which animation to use
 		currentAction = action;
-		AnimatedAction act = behaviour.actions.get(currentAction);
-		width = act.animation.getWidth(null);
-		height = act.animation.getHeight(null);
+		width = 128;
+		height = 128;
 
 	}
 

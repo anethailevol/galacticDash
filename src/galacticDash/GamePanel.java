@@ -45,7 +45,7 @@ public class GamePanel extends JPanel {
 		setFocusable(true);
 		requestFocusInWindow();
 
-		player = new Player(200, 500);
+		player = new Player(200, 638);
 
 		timer = new Timer(15, e ->{//game loop using swing timer
 			update();
@@ -66,14 +66,17 @@ public class GamePanel extends JPanel {
 		tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
 
 		//add platforms
-		platforms.add(new Platform(0, 628, 400, 180, longPlatform));
-		platforms.add(new Platform(398, 628, 400, 180, longPlatform));
-		platforms.add(new Platform(398, 628, 400, 180, longPlatform));
-		platforms.add(new Platform(796, 628, 400, 180, longPlatform));
-		platforms.add(new Platform(1194, 628, 400, 180, longPlatform));
+		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
 
-		platforms.add(new Platform(1720, 500, 300, 160, tallPlatform));
-		platforms.add(new Platform(2100, 500, 300, 160, tallPlatform));
+		platforms.add(new Platform(1720, 500, 150, 160, tallPlatform));
+		platforms.add(new Platform(2200, 500, 150, 160, tallPlatform));
+
+		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
+		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
 
 	}
 
@@ -81,17 +84,17 @@ public class GamePanel extends JPanel {
 		timer.start();//game timer
 		timeElapsedTimer.start();//elapsed timer (display)
 	}
-	
+
 	public void endGame() {
-	    timer.stop();
-	    timeElapsedTimer.stop();
-	    window.resetGame();
+		timer.stop();
+		timeElapsedTimer.stop();
+		window.resetGame();
 	}
 
 	public void update() {
 		if (input.menu){//if menu clicked
-		    endGame();
-		    return;//stop updating frame
+			endGame();
+			return;//stop updating frame
 		}
 
 		if (input.left) {
@@ -112,18 +115,46 @@ public class GamePanel extends JPanel {
 			player.setAction("jump");
 		}
 
+		int previousY = player.y;//previous y value
+
 		//gravity
 		player.velocity += 1;//gravity amount
 		player.y += player.velocity;//apply velocity to player
 
-		if (player.y >= player.groundY){//checking is player on ground
-			player.y = player.groundY;
+		player.onGround = false;//asume sprite falling
+
+		//PLATFORM COLLISION
+		for (Platform p : platforms){
+			Rectangle playerBounds = player.getBounds();
+			Rectangle platformBounds = p.getBounds();
+
+			if (playerBounds.intersects(platformBounds)){//if the player and platform overlap
+
+				if (player.velocity > 0){//only works if player falling
+					int platformTop = p.y;
+
+					boolean abovePlatform = previousY + player.height <= platformTop;//if player above platform
+					boolean feetOnPlatform = player.y + player.height >= platformTop;//if playet feet reaches/passes top
+
+					if (abovePlatform && feetOnPlatform){//only works if both are true
+						player.y = platformTop - player.height;//player goes to top of platform
+						player.velocity = 0;
+						player.onGround = true;
+					}//end of both true
+					
+				}//end of falling player
+			}//end of intersection
+		}//end of loop
+
+
+
+		int feet = player.y + player.height;//sprite bottom
+		if (!player.onGround && feet >= player.groundY){//checking if sprite is on ground
+			player.y = player.groundY - player.height;
 			player.velocity = 0;
 			player.onGround = true;
-			if (!input.left && !input.right){
-				player.setAction("idle");
-			}
 		}
+
 
 		//Scrolling mechanism
 		bgX1 -= scrollSpeed;
@@ -158,7 +189,7 @@ public class GamePanel extends JPanel {
 		} 
 
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
-		
+
 		//background
 		g.drawImage(bg1, bgX1, 0, null);
 		g.drawImage(bg2, bgX2, 0, null);
