@@ -1,5 +1,8 @@
 package galacticDash;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -15,6 +18,10 @@ public class GamePanel extends JPanel {
 	private Input input;
 	private Player player;  
 	private Timer timer;
+
+	//elapsed time (for display)
+	private int elapsedTime = 0;//in seconds
+	private Timer timeElapsedTimer;
 
 	//Scrolling
 	private Image bg1, bg2;
@@ -46,6 +53,10 @@ public class GamePanel extends JPanel {
 			repaint();
 		});
 
+		timeElapsedTimer = new Timer(1000, e ->{//for displayed timer
+			elapsedTime++;//increases by 1 per second
+		});
+
 		//Load Background
 		bg1 = new ImageIcon("assets/images/background1.gif").getImage();
 		bg2 = new ImageIcon("assets/images/background2.gif").getImage();
@@ -55,17 +66,21 @@ public class GamePanel extends JPanel {
 		longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
 		tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
 
+		//add platforms
 		platforms.add(new Platform(0, 628, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 628, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 628, 400, 180, longPlatform));
 		platforms.add(new Platform(796, 628, 400, 180, longPlatform));
 		platforms.add(new Platform(1194, 628, 400, 180, longPlatform));
 
-		platforms.add(new Platform(1720, 500, 250, 160, tallPlatform));
+		platforms.add(new Platform(1720, 500, 300, 160, tallPlatform));
+		platforms.add(new Platform(2100, 500, 300, 160, tallPlatform));
+
 	}
 
 	public void startGame() {
-		timer.start();
+		timer.start();//game timer
+		timeElapsedTimer.start();//elapsed timer (display)
 	}
 
 	public void update() {
@@ -124,7 +139,17 @@ public class GamePanel extends JPanel {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Font pixelFont;//main game font
 
+		//SET FONT
+		try {
+			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
+			GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(pixelFont);
+		} 
+
+		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
+		
 		//background
 		g.drawImage(bg1, bgX1, 0, null);
 		g.drawImage(bg2, bgX2, 0, null);
@@ -136,6 +161,14 @@ public class GamePanel extends JPanel {
 
 		//player
 		player.draw(g);
+
+		g.setColor(Color.WHITE);
+		g.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
+		//converting into minutes and seconds
+		int minutes = elapsedTime/60;
+		int seconds = elapsedTime%60;
+		String timeAnalog = String.format("%02d:%02d", minutes, seconds);
+		g.drawString("Time: " + timeAnalog, 10, 40);
 
 	}
 

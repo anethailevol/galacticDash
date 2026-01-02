@@ -25,7 +25,6 @@ public class StartScreen extends JPanel{
 		background = new ImageIcon("assets/images/background.gif");
 
 		//SET FONT
-
 		try {
 			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
 			GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
