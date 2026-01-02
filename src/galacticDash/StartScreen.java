@@ -54,27 +54,33 @@ public class StartScreen extends JPanel{
 		JButton helpButton = new JButton("Help");
 
 		//button font
-		Font font = pixelFont.deriveFont(30f);
+		Font font = pixelFont.deriveFont(40f);
 		playButton.setFont(font);
 		helpButton.setFont(font);
 		
 		//button sizes
-		playButton.setPreferredSize(new Dimension(200, 60));
-		playButton.setMaximumSize(new Dimension(200, 60));
+		playButton.setPreferredSize(new Dimension(250, 100));
+		playButton.setMaximumSize(new Dimension(250, 100));
 
-		helpButton.setPreferredSize(new Dimension(200, 60));
-		helpButton.setMaximumSize(new Dimension(200, 60));
+		helpButton.setPreferredSize(new Dimension(250, 100));
+		helpButton.setMaximumSize(new Dimension(250, 100));
 
 		//center alignment
 		playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		helpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+		//play and help button colours
+		playButton.setBackground(Color.BLACK);
+		playButton.setForeground(Color.WHITE);
+		helpButton.setBackground(Color.BLACK);
+		helpButton.setForeground(Color.WHITE);
+		
 		//adding buttons to panel
 		buttonPanel.add(playButton);
 		buttonPanel.add(Box.createVerticalStrut(40));//spacing between buttons
 		buttonPanel.add(helpButton);
 
-		buttonPanel.setBorder(BorderFactory.createEmptyBorder(150, 0, 0, 0));//moviing buttons lowerr using padding
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(90, 0, 0, 0));//moviing buttons lower using padding
 		add(buttonPanel, BorderLayout.CENTER);
 
 		// Example actions

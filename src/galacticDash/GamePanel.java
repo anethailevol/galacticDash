@@ -23,10 +23,11 @@ public class GamePanel extends JPanel {
 	//constructor
 	public GamePanel(GameWindow window){
 		this.window = window;
-		setBackground(Color.LIGHT_GRAY);//temp colour
+		setBackground(Color.BLACK);//temp colour
 		setLayout(null);
 		setFocusable(true);
-		
+		setDoubleBuffered(true);
+
 		input = new Input();
 	    addKeyListener(input);
 	    setFocusable(true);
@@ -66,7 +67,6 @@ public class GamePanel extends JPanel {
 	        player.setAction("jump");
 	    }
 
-	    
 	    //gravity
 	    player.velocity += 1;//gravity amount
 	    player.y += player.velocity;//apply velocity to player
