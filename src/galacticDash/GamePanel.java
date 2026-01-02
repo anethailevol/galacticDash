@@ -1,6 +1,8 @@
 package galacticDash;
 import java.awt.*;
 import javax.swing.*;
+import java.util.ArrayList;
+
 /*
  * Athena Arun, Mithushaa Rajakumar
  * ICS4U1
@@ -17,8 +19,11 @@ public class GamePanel extends JPanel {
 	private Image bg1, bg2;
 	private int bgX1 = 0;
 	private int bgX2;
-	private int scrollSpeed = 5;
+	private int scrollSpeed = 4;
 	
+	//platforms
+	private Image longPlatform, tallPlatform;
+	private ArrayList<Platform> platforms = new ArrayList<>();
 
 	//constructor
 	public GamePanel(GameWindow window){
@@ -33,8 +38,9 @@ public class GamePanel extends JPanel {
 	    setFocusable(true);
 	    requestFocusInWindow();
 
+        
 	    player = new Player(200, 300);
-	    Timer timer = new Timer(30, e ->{//game loop using swing timer
+	    Timer timer = new Timer(15, e ->{//game loop using swing timer
             update();
             repaint();
         });
@@ -44,6 +50,13 @@ public class GamePanel extends JPanel {
         bg1 = new ImageIcon("assets/images/background1.gif").getImage();
         bg2 = new ImageIcon("assets/images/background2.gif").getImage();
         bgX2 = bg1.getWidth(null); 
+        
+        //load platforms
+        longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
+        tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
+        
+        platforms.add(new Platform(0, 600, 400, 180, longPlatform));
+        platforms.add(new Platform(0, 300, 120, 80, tallPlatform));
     }
 
 	
@@ -97,12 +110,16 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-		
 	    super.paintComponent(g);
 
 	    //background
 	    g.drawImage(bg1, bgX1, 0, null);
 	    g.drawImage(bg2, bgX2, 0, null);
+	    
+	    //platforms
+	    for (Platform p : platforms){
+	        p.draw(g);
+	    }
 	    
 	    //player
 	    player.draw(g);
