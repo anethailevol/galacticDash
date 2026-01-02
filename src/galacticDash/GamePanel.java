@@ -11,7 +11,14 @@ import javax.swing.*;
 public class GamePanel extends JPanel {
 	private GameWindow window;
 	private Input input;
-	private Player player;   
+	private Player player;  
+	
+	//Scrolling
+	private Image bg1, bg2;
+	private int bgX1 = 0;
+	private int bgX2;
+	private int scrollSpeed = 5;
+	
 
 	//constructor
 	public GamePanel(GameWindow window){
@@ -19,7 +26,6 @@ public class GamePanel extends JPanel {
 		setBackground(Color.LIGHT_GRAY);//temp colour
 		setLayout(null);
 		setFocusable(true);
-		setOpaque(false);//to ensure transparent sprite
 		
 		input = new Input();
 	    addKeyListener(input);
@@ -32,6 +38,11 @@ public class GamePanel extends JPanel {
             repaint();
         });
         timer.start();
+        
+        //Load Background
+        bg1 = new ImageIcon("assets/images/background1.gif").getImage();
+        bg2 = new ImageIcon("assets/images/background2.gif").getImage();
+        bgX2 = bg1.getWidth(null); 
     }
 
 	
@@ -68,12 +79,34 @@ public class GamePanel extends JPanel {
 	            player.setAction("idle");
 	        }
 	    }
+	    
+	    //Scrolling mechanism
+	    bgX1 -= scrollSpeed;
+	    bgX2 -= scrollSpeed;
+
+	 // If bg1 goes off screen, move it to the right of bg2
+	    if (bgX1 + bg1.getWidth(null) <= 0) {
+	        bgX1 = bgX2 + bg2.getWidth(null);
+	    }
+
+	    // If bg2 goes off screen, move it to the right of bg1
+	    if (bgX2 + bg2.getWidth(null) <= 0) {
+	        bgX2 = bgX1 + bg1.getWidth(null);
+	    }
 
 	}
 	
 	public void paintComponent(Graphics g) {
+		
 	    super.paintComponent(g);
+
+	    //background
+	    g.drawImage(bg1, bgX1, 0, null);
+	    g.drawImage(bg2, bgX2, 0, null);
+	    
+	    //player
 	    player.draw(g);
+	    
 	}
 
 }//end of class
