@@ -17,7 +17,11 @@ public class GamePanel extends JPanel {
 	private Input input;
 	private Player player;  
 	private Timer timer;
+	private boolean paused = false;
+	private boolean prevPaused = false;
+	private boolean prevM = false;
 
+	
 	//elapsed time (for display)
 	private int elapsedTime = 0;//in seconds
 	private Timer timeElapsedTimer;
@@ -53,6 +57,7 @@ public class GamePanel extends JPanel {
 		});
 
 		timeElapsedTimer = new Timer(1000, e ->{//for displayed timer
+			if(!paused)
 			elapsedTime++;//increases by 1 per second
 		});
 
@@ -105,6 +110,23 @@ public class GamePanel extends JPanel {
 			endGame();
 			return;//stop updating frame
 		}
+		
+		if (input.pause && !prevPaused){//if pause is clicked
+		    paused = !paused;//pause/resume
+		}
+		prevPaused = input.pause;
+
+		// If paused, freeze game
+		if (paused){
+			
+		    if (input.menu && !prevM){//go to menu
+		        window.showScreen("start");
+		    }
+		    prevM = input.menu;
+
+		    return;//stops game
+		}
+
 
 		if (input.left) {
 			player.x -= 5;
@@ -229,8 +251,20 @@ public class GamePanel extends JPanel {
 		int seconds = elapsedTime%60;
 		String timeAnalog = String.format("%02d:%02d", minutes, seconds);
 		g.drawString("Time: " + timeAnalog, 10, 30);
-		g.drawString("Click 'M' for menu", 1200, 30);
+		g.drawString("'M' for Menu | 'ESC' to Pause", 1020, 30);
+		
+		if (paused){//paused game box
+		    g.setColor(new Color(0, 0, 0, 180));
+		    g.fillRect(490, 200, 500, 200);
+		    g.setColor(Color.WHITE);
+		    g.setFont(pixelFont.deriveFont(40f));
+		    g.drawString("PAUSED", 620, 270);
+		    g.setFont(pixelFont.deriveFont(20f));
+		    g.drawString("Press 'ESC' to Resume", 530, 320);
+		    g.drawString("Press 'M' for Menu", 530, 360);
+		}//end of paused box
 
-	}
+
+	}//end of paintComponent
 
 }//end of class
