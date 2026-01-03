@@ -21,7 +21,7 @@ public class GamePanel extends JPanel {
 	private boolean prevPaused = false;
 	private boolean prevM = false;
 
-	
+
 	//elapsed time (for display)
 	private int elapsedTime = 0;//in seconds
 	private Timer timeElapsedTimer;
@@ -35,6 +35,9 @@ public class GamePanel extends JPanel {
 	//platforms
 	private Image longPlatform, tallPlatform;
 	private ArrayList<Platform> platforms = new ArrayList<>();
+
+	//ending ufo
+	private UFO ufo;
 
 	//constructor
 	public GamePanel(GameWindow window){
@@ -58,7 +61,7 @@ public class GamePanel extends JPanel {
 
 		timeElapsedTimer = new Timer(1000, e ->{//for displayed timer
 			if(!paused)
-			elapsedTime++;//increases by 1 per second
+				elapsedTime++;//increases by 1 per second
 		});
 
 		//Load Background
@@ -69,6 +72,10 @@ public class GamePanel extends JPanel {
 		//load platforms
 		longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
 		tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
+
+		//load ufo
+		Image ufoImg = new ImageIcon("assets/images/ufo.png").getImage();
+		ufo = new UFO(6710, 460, 260, 190, ufoImg);
 
 		//add platforms
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
@@ -85,10 +92,10 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
-		
-		platforms.add(new Platform(5000, 450, 150, 160, tallPlatform));
+
+		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
 		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
-		
+
 		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
@@ -110,21 +117,21 @@ public class GamePanel extends JPanel {
 			endGame();
 			return;//stop updating frame
 		}
-		
+
 		if (input.pause && !prevPaused){//if pause is clicked
-		    paused = !paused;//pause/resume
+			paused = !paused;//pause/resume
 		}
 		prevPaused = input.pause;
 
 		// If paused, freeze game
 		if (paused){
-			
-		    if (input.menu && !prevM){//go to menu
-		        window.showScreen("start");
-		    }
-		    prevM = input.menu;
 
-		    return;//stops game
+			if (input.menu && !prevM){//go to menu
+				window.showScreen("start");
+			}
+			prevM = input.menu;
+
+			return;//stops game
 		}
 
 
@@ -155,13 +162,21 @@ public class GamePanel extends JPanel {
 		player.onGround = false;//asume sprite falling
 		boolean voided = false;
 		
+		Rectangle playerBounds = player.getBounds();//player boundaries
+		Rectangle ufoBounds = ufo.getBounds();//ufo boundaries
+		
+		//WINNING GAME
+		if (playerBounds.intersects(ufoBounds)){//player touches ufo
+		    endGame();
+		    window.showScreen("gameWin");
+		    return;
+		}//end of win
+
 		//PLATFORM COLLISION
 		for (Platform p : platforms){
-			Rectangle playerBounds = player.getBounds();
 			Rectangle platformBounds = p.getBounds();
-
 			if (playerBounds.intersects(platformBounds)){//if the player and platform overlap
-				
+
 				if (player.velocity > 0){//only works if player falling
 					int platformTop = p.y;
 					boolean abovePlatform = previousY + player.height <= platformTop;//if player above platform
@@ -176,36 +191,31 @@ public class GamePanel extends JPanel {
 			}
 		}
 
-		//TEMP--> changing ground level to 800 for void
+		//void detection (game over)
 		int groundY = 800;
 		if (!player.onGround){
-		    int feet = player.y + player.height;//sprite bottom
-		    if (feet >= groundY){//checking if sprite is on ground
-		        player.y = groundY - player.height;
-		        player.velocity = 0;
-		        player.onGround = true;
-		        voided = true;
-		    }
+			int feet = player.y + player.height;//sprite bottom
+			if (feet >= groundY){//checking if sprite is on ground
+				player.y = groundY - player.height;
+				player.velocity = 0;
+				player.onGround = true;
+				voided = true;
+			}
 		}
 
 		if (player.x <=-130){//if player touches very left
 			voided = true;
 		}
-		
+
 		if (voided == true){//if player touches bottom
 			endGame();
 			window.showScreen("gameOver");
 			return;
 		}
-		
+
 		//Scrolling mechanism
 		bgX1 -= scrollSpeed;
 		bgX2 -= scrollSpeed;
-
-		//platform scroll
-		for (Platform p : platforms){
-			p.x -= scrollSpeed;
-		}
 
 		// If bg1 goes off screen, move it to the right of bg2
 		if (bgX1 + bg1.getWidth(null) <= 0) {
@@ -216,6 +226,14 @@ public class GamePanel extends JPanel {
 		if (bgX2 + bg2.getWidth(null) <= 0) {
 			bgX2 = bgX1 + bg1.getWidth(null);
 		}
+
+		//platform scroll
+		for (Platform p : platforms){
+			p.x -= scrollSpeed;
+		}
+		
+		//ufo scroll
+		ufo.x -= scrollSpeed;
 
 	}//end of update
 
@@ -241,6 +259,9 @@ public class GamePanel extends JPanel {
 			p.draw(g);
 		}
 
+		//ufo
+		ufo.draw(g);
+		
 		//player
 		player.draw(g);
 
@@ -252,16 +273,16 @@ public class GamePanel extends JPanel {
 		String timeAnalog = String.format("%02d:%02d", minutes, seconds);
 		g.drawString("Time: " + timeAnalog, 10, 30);
 		g.drawString("'M' for Menu | 'ESC' to Pause", 1020, 30);
-		
+
 		if (paused){//paused game box
-		    g.setColor(new Color(0, 0, 0, 180));
-		    g.fillRect(490, 200, 500, 200);
-		    g.setColor(Color.WHITE);
-		    g.setFont(pixelFont.deriveFont(40f));
-		    g.drawString("PAUSED", 620, 270);
-		    g.setFont(pixelFont.deriveFont(20f));
-		    g.drawString("Press 'ESC' to Resume", 530, 320);
-		    g.drawString("Press 'M' for Menu", 530, 360);
+			g.setColor(new Color(0, 0, 0, 180));
+			g.fillRect(490, 200, 500, 200);
+			g.setColor(Color.WHITE);
+			g.setFont(pixelFont.deriveFont(40f));
+			g.drawString("PAUSED", 620, 270);
+			g.setFont(pixelFont.deriveFont(20f));
+			g.drawString("Press 'ESC' to Resume", 530, 320);
+			g.drawString("Press 'M' for Menu", 530, 360);
 		}//end of paused box
 
 

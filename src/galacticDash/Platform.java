@@ -4,20 +4,21 @@ import java.awt.*;
  * Athena Arun, Mithushaa Rajakumar
  * ICS4U1
  * January 12, 2025
- * Galactic Dash - Platform
+ * Galactic Dash - Platform Object
  */
 
 public class Platform {
 	public int x, y, width, height;
 	public Image img;//platform image
 
+	//constructor
 	public Platform(int x, int y, int width, int height, Image img){
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.img = img;
-	}
+	}//end of constructor
 
 	public Rectangle getBounds() {
 		return new Rectangle(x, y, width, height);

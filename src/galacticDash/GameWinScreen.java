@@ -7,16 +7,16 @@ import javax.swing.*;
  * Athena Arun, Mithushaa Rajakumar
  * ICS4U1
  * January 12, 2025
- * Galactic Dash - Game Over Screen
+ * Galactic Dash - Game Win Screen
  */
-public class GameOverScreen extends JPanel {
-
-	private Image gameOverbg;
-
-	public GameOverScreen(GameWindow window) {
-		setLayout(null);
+public class GameWinScreen extends JPanel{
+	
+	private Image gameWinbg;
+	
+	public GameWinScreen(GameWindow window) {
+        setLayout(null);
 		setBackground(Color.BLACK);//temp colour
-		gameOverbg = new ImageIcon("assets/images/gameOverbg.gif").getImage();
+		gameWinbg = new ImageIcon("assets/images/gameWinbg.gif").getImage();
 
 		Font pixelFont;//game font
 
@@ -28,37 +28,36 @@ public class GameOverScreen extends JPanel {
 		} 
 
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
-
-		JLabel gameOver = new JLabel("GAME OVER");
-		gameOver.setFont(pixelFont.deriveFont(Font.PLAIN, 100f));
-		gameOver.setForeground(Color.WHITE); 
-		gameOver.setBounds(300, 150, 1000, 100);
+		
+        JLabel gameOver = new JLabel("YOU WIN");
+        gameOver.setFont(pixelFont.deriveFont(Font.PLAIN, 100f));
+        gameOver.setForeground(Color.WHITE); 
+        gameOver.setBounds(400, 150, 1000, 100);
 		add(gameOver, BorderLayout.NORTH);
 
-		JButton home = new JButton("Home");
+        JButton home = new JButton("Home");
 		home.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
 		home.setForeground(Color.BLACK); 
 		home.setBackground(Color.WHITE); 
 
-		home.setBounds(100, 600, 200, 50);
-		add(home);
+        home.setBounds(100, 600, 200, 50);
+        add(home);
 
-		home.addActionListener(e -> {
-			window.showScreen("start");
-		});
-
+        home.addActionListener(e -> {
+        	window.showScreen("start");
+        });
 	}
-
+	
 	public void paintComponent(Graphics comp) {
 		super.paintComponent(comp);
 		Graphics2D comp2D = (Graphics2D) comp;
-		comp2D.drawImage(gameOverbg, 0, 0, getWidth(), getHeight(), this);
-
+		comp2D.drawImage(gameWinbg, 0, 0, getWidth(), getHeight(), this);
+		
 		//transparent black box to dim bg
-		comp.setColor(new Color(0, 0, 0, 100));
+		comp.setColor(new Color(0, 0, 0, 150));
 		comp.fillRect(0, 0, getWidth(), getHeight());
 
 	}//end of paintComponent
-
-
-}//end of class
+	
+	
+}//end of screen

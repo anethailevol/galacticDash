@@ -15,6 +15,7 @@ public class GameWindow extends JFrame  {
 	private JPanel mainPanel;
 	private GamePanel gamePanel;//game panel
 	private GameOverScreen gameOverPanel;//game over panel
+	private GameWinScreen gameWinPanel;//game win panel
 
 	//game window constructor
 	public GameWindow() {
@@ -35,10 +36,13 @@ public class GameWindow extends JFrame  {
 		gamePanel = new GamePanel(this);
 		//game over screen
 		gameOverPanel = new GameOverScreen(this);
+		//game win screen
+		gameWinPanel = new GameWinScreen(this);
 
 		mainPanel.add(startScreen, "start");
 		mainPanel.add(gamePanel, "game");
 		mainPanel.add(gameOverPanel, "gameOver");
+		mainPanel.add(gameWinPanel, "gameWin");
 
 		add(mainPanel);
 		setVisible(true);
@@ -54,9 +58,9 @@ public class GameWindow extends JFrame  {
 	}
 
 	public void resetGame(){
-	    mainPanel.remove(gamePanel);
-	    gamePanel = new GamePanel(this);
-	    mainPanel.add(gamePanel, "game");
+		mainPanel.remove(gamePanel);
+		gamePanel = new GamePanel(this);
+		mainPanel.add(gamePanel, "game");
 	}
 
 
