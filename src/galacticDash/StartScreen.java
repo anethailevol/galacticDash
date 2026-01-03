@@ -11,14 +11,13 @@ import javax.swing.*;
  */
 
 public class StartScreen extends JPanel{
-	
-	private GameWindow window;//reference main window
 
+	private GameWindow window;//reference main window
 	ImageIcon background;
 
 	//constructor
 	public StartScreen(GameWindow window) {
-		
+
 		this.window = window;
 		Font pixelFont; //main game font
 
@@ -55,7 +54,7 @@ public class StartScreen extends JPanel{
 		Font font = pixelFont.deriveFont(40f);
 		playButton.setFont(font);
 		helpButton.setFont(font);
-		
+
 		//button sizes
 		playButton.setPreferredSize(new Dimension(250, 100));
 		playButton.setMaximumSize(new Dimension(250, 100));
@@ -72,7 +71,7 @@ public class StartScreen extends JPanel{
 		playButton.setForeground(Color.WHITE);
 		helpButton.setBackground(Color.BLACK);
 		helpButton.setForeground(Color.WHITE);
-		
+
 		//remove white box when clicked
 		playButton.setFocusPainted(false);
 		helpButton.setFocusPainted(false);
@@ -86,7 +85,11 @@ public class StartScreen extends JPanel{
 		add(buttonPanel, BorderLayout.CENTER);
 
 		// Example actions
-		playButton.addActionListener(e -> window.showScreen("game"));
+		playButton.addActionListener(e -> {
+			window.resetGame();
+			window.showScreen("game");
+		});
+
 		helpButton.addActionListener(e -> {
 			JDialog helpDialog = new JDialog(window, "Help", true);
 			helpDialog.setSize(500, 260);
@@ -114,7 +117,7 @@ public class StartScreen extends JPanel{
 			helpDialog.setVisible(true);
 
 		});//end of help button pop up
-		
+
 	}//end of startScreen
 
 	public void paintComponent(Graphics comp) {

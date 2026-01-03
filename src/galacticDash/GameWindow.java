@@ -13,7 +13,8 @@ public class GameWindow extends JFrame  {
 
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
-	private GamePanel panel2;//game panel
+	private GamePanel gamePanel;//game panel
+	private GameOverScreen gameOverPanel;//game over panel
 
 	//game window constructor
 	public GameWindow() {
@@ -29,13 +30,15 @@ public class GameWindow extends JFrame  {
 		mainPanel = new JPanel(cardLayout);
 
 		//Start Screen
-		StartScreen panel1 = new StartScreen(this);
-
+		StartScreen startScreen = new StartScreen(this);
 		//game screen
-		panel2 = new GamePanel(this);
+		gamePanel = new GamePanel(this);
+		//game over screen
+		gameOverPanel = new GameOverScreen(this);
 
-		mainPanel.add(panel1, "start");
-		mainPanel.add(panel2, "game");
+		mainPanel.add(startScreen, "start");
+		mainPanel.add(gamePanel, "game");
+		mainPanel.add(gameOverPanel, "gameOver");
 
 		add(mainPanel);
 		setVisible(true);
@@ -44,16 +47,16 @@ public class GameWindow extends JFrame  {
 	public void showScreen(String name){
 		cardLayout.show(mainPanel, name);
 		if ("game".equals(name)) {
-			panel2.startGame();//only start game when clicked
-			panel2.requestFocusInWindow();
+			gamePanel.startGame();//only start game when clicked
+			gamePanel.requestFocusInWindow();
 		}//end of if
+
 	}
 
 	public void resetGame(){
-	    mainPanel.remove(panel2);
-	    panel2 = new GamePanel(this);
-	    mainPanel.add(panel2, "game");
-	    showScreen("start");
+	    mainPanel.remove(gamePanel);
+	    gamePanel = new GamePanel(this);
+	    mainPanel.add(gamePanel, "game");
 	}
 
 

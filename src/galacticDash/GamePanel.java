@@ -90,7 +90,7 @@ public class GamePanel extends JPanel {
 	public void endGame() {
 		timer.stop();
 		timeElapsedTimer.stop();
-		window.resetGame();
+		window.showScreen("start");
 	}
 
 	public void update() {
@@ -147,7 +147,7 @@ public class GamePanel extends JPanel {
 			}
 		}
 
-		//TEMP--> changing ground level to 0 for void
+		//TEMP--> changing ground level to 800 for void
 		int groundY = 800;
 		if (!player.onGround){
 		    int feet = player.y + player.height;//sprite bottom
@@ -159,8 +159,10 @@ public class GamePanel extends JPanel {
 		    }
 		}
 
-		if(voided == true){
+		if(voided == true){//if player touches bottom
 			endGame();
+			window.showScreen("gameOver");
+			return;
 		}
 		
 		//Scrolling mechanism
