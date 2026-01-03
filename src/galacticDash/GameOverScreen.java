@@ -11,10 +11,13 @@ import javax.swing.*;
  */
 public class GameOverScreen  extends JPanel {
 
+	private Image gameOverbg;
+	
 	public GameOverScreen(GameWindow window) {
-		
         setLayout(null);
 		setBackground(Color.BLACK);//temp colour
+		gameOverbg = new ImageIcon("assets/images/gameOverbg.gif").getImage();
+
 		Font pixelFont;//game font
 
 		//SET FONT
@@ -45,6 +48,12 @@ public class GameOverScreen  extends JPanel {
         });
 
     }
+	
+	public void paintComponent(Graphics comp) {
+		super.paintComponent(comp);
+		Graphics2D comp2D = (Graphics2D) comp;
+		comp2D.drawImage(gameOverbg, 0, 0, getWidth(), getHeight(), this);
+	}//end of paintComponent
 	
 	
 
