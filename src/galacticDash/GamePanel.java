@@ -80,6 +80,13 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
+		
+		platforms.add(new Platform(5000, 450, 150, 160, tallPlatform));
+		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
+		
+		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
 	}
 
 	public void startGame() {
