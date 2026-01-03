@@ -4,14 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 import java.util.ArrayList;
+
 /*
  * Athena Arun, Mithushaa Rajakumar
  * ICS4U1
  * January 12, 2025
- * Galactic Dash - Main Game Panel
+ * Galactic Dash - Main Game Panel - LEVEL 3
  */
 
-public class GamePanel extends JPanel {
+public class GamePanel3 extends JPanel {
 	private GameWindow window;
 	private Input input;
 	private Player player;  
@@ -39,7 +40,7 @@ public class GamePanel extends JPanel {
 	private UFO ufo;
 
 	//constructor
-	public GamePanel(GameWindow window){
+	public GamePanel3(GameWindow window){
 		this.window = window;
 		setBackground(Color.BLACK);//temp colour
 		setLayout(null);
@@ -121,7 +122,6 @@ public class GamePanel extends JPanel {
 		paused = false;
 		prevPaused = false;
 		prevM = false;
-
 	}
 
 	public void resetGame() {
@@ -173,7 +173,6 @@ public class GamePanel extends JPanel {
 		timeElapsedTimer.stop();
 		timer.stop();
 	}//end of reset
-
 
 	public void update() {
 		if (input.menu){//if menu clicked
@@ -335,7 +334,7 @@ public class GamePanel extends JPanel {
 		g.drawString("Time: " + timeAnalog, 10, 30);
 		g.drawString("'M' for Menu | 'ESC' to Pause", 1020, 30);
 
-		g.drawString("LEVEL 1", 500, 30);//temp, indicating level
+		g.drawString("LEVEL 3", 500, 30);//temp, indicating level
 
 		if (paused){//paused game box
 			g.setColor(new Color(0, 0, 0, 180));

@@ -21,7 +21,6 @@ public class GameOverScreen extends JPanel {
 		gameOverbg = new ImageIcon("assets/images/gameOverbg.gif").getImage();
 
 		Font pixelFont;//game font
-
 		//SET FONT
 		try {
 			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
@@ -36,15 +35,29 @@ public class GameOverScreen extends JPanel {
 		gameOver.setBounds(300, 150, 1000, 100);
 		add(gameOver, BorderLayout.NORTH);
 
+		
+		//home button
 		JButton home = new JButton("Home");
 		home.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
 		home.setForeground(Color.BLACK); 
 		home.setBackground(Color.WHITE); 
 		home.setBounds(300, 600, 200, 50);
 		add(home);
-
+		
 		home.addActionListener(e -> {
 			window.showScreen("start");
+		});
+		
+		//levels button
+		JButton levels = new JButton("Levels");
+		levels.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
+		levels.setForeground(Color.BLACK); 
+		levels.setBackground(Color.WHITE); 
+		levels.setBounds(1000, 600, 200, 50);
+		add(levels);
+
+		levels.addActionListener(e -> {
+			window.showScreen("levels");
 		});
 
 	}

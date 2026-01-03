@@ -54,4 +54,12 @@ public class Input implements KeyListener {
 
     public void keyTyped(KeyEvent e) {}//temp, required by interface
     
+    public void reset() {
+        left = false;
+        right = false;
+        jump = false;
+        pause = false;
+        menu = false;
+    }//end of reset
+
 }//end of class
