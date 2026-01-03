@@ -159,7 +159,11 @@ public class GamePanel extends JPanel {
 		    }
 		}
 
-		if(voided == true){//if player touches bottom
+		if (player.x <=-130){//if player touches very left
+			voided = true;
+		}
+		
+		if (voided == true){//if player touches bottom
 			endGame();
 			window.showScreen("gameOver");
 			return;
