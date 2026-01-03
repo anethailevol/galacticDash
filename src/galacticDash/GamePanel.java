@@ -101,20 +101,24 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
 	}
 
+	public int getElapsedTime() {
+	    return elapsedTime;//return elapsed time
+	}
+
 	public void startGame() {
 		timer.start();//game timer
 		timeElapsedTimer.start();//elapsed timer (display)
 	}
 
-	public void endGame() {
+	public void endGame(String screen) {
 		timer.stop();
 		timeElapsedTimer.stop();
-		window.showScreen("start");
+		window.showScreen(screen);
 	}
 
 	public void update() {
 		if (input.menu){//if menu clicked
-			endGame();
+			endGame("start");
 			return;//stop updating frame
 		}
 
@@ -167,8 +171,7 @@ public class GamePanel extends JPanel {
 		
 		//WINNING GAME
 		if (playerBounds.intersects(ufoBounds)){//player touches ufo
-		    endGame();
-		    window.showScreen("gameWin");
+		    endGame("gameWin");
 		    return;
 		}//end of win
 
@@ -208,8 +211,7 @@ public class GamePanel extends JPanel {
 		}
 
 		if (voided == true){//if player touches bottom
-			endGame();
-			window.showScreen("gameOver");
+			endGame("gameOver");
 			return;
 		}
 
@@ -284,7 +286,6 @@ public class GamePanel extends JPanel {
 			g.drawString("Press 'ESC' to Resume", 530, 320);
 			g.drawString("Press 'M' for Menu", 530, 360);
 		}//end of paused box
-
 
 	}//end of paintComponent
 

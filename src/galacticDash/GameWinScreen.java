@@ -12,8 +12,10 @@ import javax.swing.*;
 public class GameWinScreen extends JPanel{
 	
 	private Image gameWinbg;
-	
+	private GameWindow window;//reference main window
+
 	public GameWinScreen(GameWindow window) {
+		this.window = window;
         setLayout(null);
 		setBackground(Color.BLACK);//temp colour
 		gameWinbg = new ImageIcon("assets/images/gameWinbg.gif").getImage();
@@ -40,7 +42,7 @@ public class GameWinScreen extends JPanel{
 		home.setForeground(Color.BLACK); 
 		home.setBackground(Color.WHITE); 
 
-        home.setBounds(100, 600, 200, 50);
+        home.setBounds(300, 600, 200, 50);
         add(home);
 
         home.addActionListener(e -> {
@@ -56,6 +58,26 @@ public class GameWinScreen extends JPanel{
 		//transparent black box to dim bg
 		comp.setColor(new Color(0, 0, 0, 150));
 		comp.fillRect(0, 0, getWidth(), getHeight());
+		
+		Font pixelFont;//game font
+		//SET FONT
+		try {
+			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
+			GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(pixelFont);
+		} 
+			catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
+				
+		//draw final time
+		int totalSeconds = window.getTimer();
+		int minutes = totalSeconds/60;
+		int seconds = totalSeconds%60;
+		String timeString = String.format("%02d:%02d", minutes, seconds);
+		
+		comp.setColor(Color.WHITE);
+		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 30f));
+		comp.drawString("Time: " + timeString, 300, 350);
+
 
 	}//end of paintComponent
 	

@@ -17,6 +17,8 @@ public class GameWindow extends JFrame  {
 	private GameOverScreen gameOverPanel;//game over panel
 	private GameWinScreen gameWinPanel;//game win panel
 
+	private int finalTime;//final gameplay time
+
 	//game window constructor
 	public GameWindow() {
 
@@ -53,15 +55,25 @@ public class GameWindow extends JFrame  {
 		if ("game".equals(name)) {
 			gamePanel.startGame();//only start game when clicked
 			gamePanel.requestFocusInWindow();
-		}//end of if
+		}
 
-	}
+		if (name.equals("gameOver") || name.equals("gameWin")) {//both screen can access final time
+			setTimer(gamePanel.getElapsedTime());
+		}
+	}//end of showScreen
 
 	public void resetGame(){
 		mainPanel.remove(gamePanel);
 		gamePanel = new GamePanel(this);
 		mainPanel.add(gamePanel, "game");
-	}
+	}//end of resetGame
 
+	public void setTimer(int time){
+		this.finalTime = time;//final time for gameplay
+	}//end of setTime
+
+	public int getTimer() {
+	    return finalTime;//return final time
+	}
 
 }//end of class
