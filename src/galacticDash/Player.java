@@ -24,31 +24,43 @@ public class Player {
 	}
 
 	int x, y;
+	int width, height;
 	int velocity = 0;//vertical velocity
-	int groundY = 500;//ground level
-	boolean onGround = true;//check if player on ground
+	int groundY = 638;//ground level
+	boolean onGround = false;//check if player on ground
 	String currentAction;
 	final UnitBehaviour behaviour;
 	boolean flip;
-	
+
 	public Player(int x, int y) {
 		this.x = x; this.y = y;
 		currentAction = "idle";
 		behaviour = playerBehaviour;
+
+		//fixed width and height of sprite
+		width = 128;
+		height = 128;
+
 		flip = false;
 	}
 
 	public void jump() {
-	    if (onGround){
-	        velocity = -20;//jumping strength
-	        onGround = false;
-	    }
-	}
-	    
-	public void setAction(String action){//tells player which animation to use
-		currentAction = action;
+		if (onGround){
+			velocity = -20;//jumping strength
+			onGround = false;
+		}
 	}
 
+	public void setAction(String action){//tells player which animation to use
+		currentAction = action;
+		width = 128;
+		height = 128;
+
+	}
+
+	public Rectangle getBounds(){
+		return new Rectangle(x, y, width, height);
+	}
 
 	public void draw(Graphics g) {
 		AnimatedAction action = behaviour.actions.get(currentAction);

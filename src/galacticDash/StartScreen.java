@@ -11,21 +11,19 @@ import javax.swing.*;
  */
 
 public class StartScreen extends JPanel{
-	
-	private GameWindow window;//reference main window
 
+	private GameWindow window;//reference main window
 	ImageIcon background;
 
 	//constructor
 	public StartScreen(GameWindow window) {
-		
+
 		this.window = window;
 		Font pixelFont; //main game font
 
 		background = new ImageIcon("assets/images/background.gif");
 
 		//SET FONT
-
 		try {
 			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/PressStart2P.ttf")).deriveFont(18f);
 			GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -49,7 +47,6 @@ public class StartScreen extends JPanel{
 		buttonPanel.setOpaque(false); // transparent so background shows through
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));//vertical layout for buttons
 
-		
 		JButton playButton = new JButton("Play");
 		JButton helpButton = new JButton("Help");
 
@@ -57,7 +54,7 @@ public class StartScreen extends JPanel{
 		Font font = pixelFont.deriveFont(40f);
 		playButton.setFont(font);
 		helpButton.setFont(font);
-		
+
 		//button sizes
 		playButton.setPreferredSize(new Dimension(250, 100));
 		playButton.setMaximumSize(new Dimension(250, 100));
@@ -74,7 +71,11 @@ public class StartScreen extends JPanel{
 		playButton.setForeground(Color.WHITE);
 		helpButton.setBackground(Color.BLACK);
 		helpButton.setForeground(Color.WHITE);
-		
+
+		//remove white box when clicked
+		playButton.setFocusPainted(false);
+		helpButton.setFocusPainted(false);
+
 		//adding buttons to panel
 		buttonPanel.add(playButton);
 		buttonPanel.add(Box.createVerticalStrut(40));//spacing between buttons
@@ -84,13 +85,18 @@ public class StartScreen extends JPanel{
 		add(buttonPanel, BorderLayout.CENTER);
 
 		// Example actions
-		playButton.addActionListener(e -> window.showScreen("game"));
+		playButton.addActionListener(e -> {
+			window.resetGame();
+			window.showScreen("game");
+		});
+
 		helpButton.addActionListener(e -> {
 			JDialog helpDialog = new JDialog(window, "Help", true);
-			helpDialog.setSize(500, 250);
+			helpDialog.setSize(500, 260);
 			JTextArea helpText = new JTextArea(
 					"\nInstructions:" +
-							"\nYou are an alien cat, trying to avoid astronauts!" +
+							"\nYou are an alien cat, trying to navigate through space!" +
+							"\nAvoid obstacles." +
 							"\nCollect stars!" +
 							"\nTry to beat all 3 levels!" +
 							"\n\nControls:" +
@@ -111,7 +117,7 @@ public class StartScreen extends JPanel{
 			helpDialog.setVisible(true);
 
 		});//end of help button pop up
-		
+
 	}//end of startScreen
 
 	public void paintComponent(Graphics comp) {
