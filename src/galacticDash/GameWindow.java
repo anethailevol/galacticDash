@@ -14,8 +14,6 @@ public class GameWindow extends JFrame  {
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
 	private GamePanel gamePanel;//game panel
-	private GamePanel2 gamePanel2;//game panel level 2
-	private GamePanel3 gamePanel3;//game panel level 3
 
 	private GameOverScreen gameOverPanel;//game over panel
 	private GameWinScreen gameWinPanel;//game win panel
@@ -43,8 +41,6 @@ public class GameWindow extends JFrame  {
 
 		//game screen (level 1-3)
 		gamePanel = new GamePanel(this);
-		gamePanel2 = new GamePanel2(this);
-		gamePanel3 = new GamePanel3(this);
 
 		//levels panel
 		levelsPanel = new LevelsScreen(this);
@@ -56,8 +52,6 @@ public class GameWindow extends JFrame  {
 
 		mainPanel.add(startScreen, "start");
 		mainPanel.add(gamePanel, "game");
-		mainPanel.add(gamePanel2, "game2");
-		mainPanel.add(gamePanel3, "game3");
 		mainPanel.add(levelsPanel, "levels");
 		mainPanel.add(gameOverPanel, "gameOver");
 		mainPanel.add(gameWinPanel, "gameWin");
@@ -68,33 +62,17 @@ public class GameWindow extends JFrame  {
 
 
 	public void showScreen(String name){
-		cardLayout.show(mainPanel, name);
-		if ("game".equals(name)) {
-			currentLevel = 1;
-			gamePanel.startGame();//only start game when clicked
-			gamePanel.requestFocusInWindow();
-		}
-		if ("game2".equals(name)) {
-			currentLevel = 2;
-			gamePanel2.startGame();//only start game when clicked
-			gamePanel2.requestFocusInWindow();
-		}
+	    cardLayout.show(mainPanel, name);
 
-		if ("game3".equals(name)) {
-			currentLevel = 3;
-			gamePanel3.startGame();//only start game when clicked
-			gamePanel3.requestFocusInWindow();
-		}
+	    if ("game".equals(name)) {
+	        gamePanel.loadLevel(currentLevel); // load selected level
+	        gamePanel.startGame();
+	        gamePanel.requestFocusInWindow();
+	    }
 
-		if (name.equals("gameOver") || name.equals("gameWin")) {//both screen can access final time
-			if (currentLevel == 1)
-				setTimer(gamePanel.getElapsedTime());
-			if (currentLevel == 2)
-				setTimer(gamePanel2.getElapsedTime());
-			if (currentLevel == 3)
-				setTimer(gamePanel3.getElapsedTime());
-		}
-
+	    if (name.equals("gameOver") || name.equals("gameWin")) {
+	        setTimer(gamePanel.getElapsedTime());
+	    }
 	}//end of showScreen
 
 

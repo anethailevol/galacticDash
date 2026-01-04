@@ -16,7 +16,6 @@ public class LevelsScreen extends JPanel{
 
 	public LevelsScreen(GameWindow window) {
 		this.window = window;
-		setLayout(null);
 		setBackground(Color.BLACK);//temp colour
 		bg = new ImageIcon("assets/images/background.gif");
 
@@ -113,12 +112,12 @@ public class LevelsScreen extends JPanel{
 
 		level2.addActionListener(e ->{
 		    window.setCurrentLevel(2);
-		    window.showScreen("game2");
+		    window.showScreen("game");
 		});
 
 		level3.addActionListener(e ->{
 		    window.setCurrentLevel(3);
-		    window.showScreen("game3");
+		    window.showScreen("game");
 		});
 
 	}

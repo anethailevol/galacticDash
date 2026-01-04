@@ -2,8 +2,8 @@ package galacticDash;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.*;
 import java.util.ArrayList;
+import javax.swing.*;
 /*
  * Athena Arun, Mithushaa Rajakumar
  * ICS4U1
@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 
 public class GamePanel extends JPanel {
+	
 	private GameWindow window;
 	private Input input;
 	private Player player;  
@@ -19,8 +20,16 @@ public class GamePanel extends JPanel {
 	private boolean paused = false;
 	private boolean prevPaused = false;
 	private boolean prevM = false;
-
-
+	
+	// aliens + hearts
+	private ArrayList<Alien> aliens = new ArrayList<>();
+	private int hearts = 3;
+	private int alienSpawnRate = 0;   // frames between spawns
+	private int alienSpawnTimer = 0;  // counts frames
+	
+	//level
+	private int currentLevel = 1;
+	
 	//elapsed time (for display)
 	private int elapsedTime = 0;//in seconds
 	private Timer timeElapsedTimer;
@@ -37,6 +46,32 @@ public class GamePanel extends JPanel {
 
 	//ending ufo
 	private UFO ufo;
+	
+	public void loadLevel(int level) {
+		this.currentLevel = level;
+		
+		platforms.clear();
+		aliens.clear();
+		hearts = 3;
+		
+		if (level == 1) {
+	        loadLevel1();
+	        scrollSpeed = 6;
+	        alienSpawnRate = 0; //no aliens
+	    }
+
+	    if (level == 2) {
+	        loadLevel2();
+	        scrollSpeed = 10;      // faster scroll
+	        alienSpawnRate = 200; // 5 seconds at 15ms per frame
+	    }
+
+	    if (level == 3) {
+	        loadLevel3();
+	        scrollSpeed = 15;
+	        alienSpawnRate = 100; // aliens every ~3 seconds
+	    }
+	}
 
 	//constructor
 	public GamePanel(GameWindow window){
@@ -75,29 +110,10 @@ public class GamePanel extends JPanel {
 		//load ufo
 		Image ufoImg = new ImageIcon("assets/images/ufo.png").getImage();
 		ufo = new UFO(6710, 460, 260, 190, ufoImg);
-
-		//add platforms
-		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
-
-		platforms.add(new Platform(1720, 500, 150, 160, tallPlatform));
-		platforms.add(new Platform(2200, 500, 150, 160, tallPlatform));
-
-		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
-		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
-
-		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
-
-		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
-		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
-
-		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
+		
+		//load alien
+		
+		loadLevel(1);
 	}
 
 	public int getElapsedTime() {
@@ -106,6 +122,7 @@ public class GamePanel extends JPanel {
 
 	public void startGame() {
 		resetGame();
+		loadLevel(currentLevel);
 		timer.start();//game timer
 		timeElapsedTimer.start();//elapsed timer (display)
 		requestFocusInWindow();
@@ -142,27 +159,7 @@ public class GamePanel extends JPanel {
 
 		//resetting platforms
 		platforms.clear();
-		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
-
-		platforms.add(new Platform(1720, 500, 150, 160, tallPlatform));
-		platforms.add(new Platform(2200, 500, 150, 160, tallPlatform));
-
-		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
-		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
-
-		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
-
-		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
-		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
-
-		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
+		addPlatforms();
 
 		//reset ufo
 		ufo.x = 6710;
@@ -172,6 +169,10 @@ public class GamePanel extends JPanel {
 		elapsedTime = 0;
 		timeElapsedTimer.stop();
 		timer.stop();
+		
+		//reset aliens + heart
+		aliens.clear();
+		hearts = 3;
 	}//end of reset
 
 
@@ -269,9 +270,39 @@ public class GamePanel extends JPanel {
 			voided = true;
 		}
 
-		if (voided == true){//if player touches bottom
+		if (voided == true) {//if player touches bottom
 			endGame("gameOver");
 			return;
+		}
+
+		// alien spawn: only when a positive spawn rate is set for the level
+		if (alienSpawnRate > 0) {
+			alienSpawnTimer++;
+			if (alienSpawnTimer >= alienSpawnRate) {
+				spawnAlien();
+				alienSpawnTimer = 0;
+			}
+		}
+		
+		// update aliens
+		for (int i = aliens.size() - 1; i >= 0; i--) {
+		    Alien a = aliens.get(i);
+		    a.x -= scrollSpeed; //move to left
+
+		    if (a.x + a.width < 0) {
+		        aliens.remove(i);
+		        continue;
+		    }
+
+		    if (a.getBounds().intersects(player.getBounds())) {
+		        hearts--;
+		        aliens.remove(i);
+
+		        if (hearts <= 0) {
+		            endGame("gameOver");
+		            return;
+		        }
+		    }
 		}
 
 		//Scrolling mechanism
@@ -295,9 +326,56 @@ public class GamePanel extends JPanel {
 
 		//ufo scroll
 		ufo.x -= scrollSpeed;
+		
 
 	}//end of update
+	
+	private void spawnAlien() {
+	    int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
+	    int startY = 400;
+	    aliens.add(new Alien(startX, startY, 6));
+	}
+	
+	private void loadLevel1() {
+	    addPlatforms(); // custom level 1 layout
+	}
 
+	private void loadLevel2() {
+	    addPlatforms(); // replace with level 2 layout
+	}
+
+	private void loadLevel3() {
+	    addPlatforms(); // replace with level 3 layout
+	    aliens.add(new Alien(2000, 500, 6));
+	}
+	
+	public void addPlatforms() {
+		//add platforms
+		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
+
+		platforms.add(new Platform(1720, 500, 150, 160, tallPlatform));
+		platforms.add(new Platform(2200, 500, 150, 160, tallPlatform));
+
+		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
+		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
+
+		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
+
+		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
+		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
+
+		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
+	}
+	
+
+	//PAINT COMPONENT
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Font pixelFont;//main game font
@@ -325,6 +403,19 @@ public class GamePanel extends JPanel {
 
 		//player
 		player.draw(g);
+		
+		// draw aliens
+		for (Alien a : aliens) {
+		    a.draw(g);
+		}
+		
+		// draw hearts
+		for (int i = 0; i < 3; i++) {
+		    if (i < hearts)
+		        g.drawImage(new ImageIcon("assets/images/heart.png").getImage(), 20 + i * 40, 60, 32, 32, null);
+		    else
+		        g.drawImage(new ImageIcon("assets/images/deadheart.png").getImage(), 20 + i * 40, 60, 32, 32, null);
+		}
 
 		g.setColor(Color.WHITE);
 		g.setFont(pixelFont.deriveFont(Font.PLAIN, 15f));
@@ -335,7 +426,7 @@ public class GamePanel extends JPanel {
 		g.drawString("Time: " + timeAnalog, 10, 30);
 		g.drawString("'M' for Menu | 'ESC' to Pause", 1020, 30);
 
-		g.drawString("LEVEL 1", 500, 30);//temp, indicating level
+		g.drawString("LEVEL " + currentLevel, 500, 30);//current level
 
 		if (paused){//paused game box
 			g.setColor(new Color(0, 0, 0, 180));

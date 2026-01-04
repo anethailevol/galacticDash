@@ -10,7 +10,7 @@ import javax.swing.*;
  * Galactic Dash - Game Over Screen
  */
 public class GameOverScreen extends JPanel {
-
+	
 	private Image gameOverbg;
 	private GameWindow window;//reference main window
 

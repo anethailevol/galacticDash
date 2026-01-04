@@ -15,3 +15,12 @@ https://tenor.com/view/glorp-cat-alien-dance-gif-702725459712104069
 
 Cat Spinning Gif:
 https://tenor.com/view/glorp-spin-360-gif-360-glorp-spin-gif-14999783910999808419
+
+alien gif:
+https://tenor.com/view/gog-the-alien-alien-dog-labubu-gogfufu-labubu-hehe-gif-17152290720086795410
+
+Hearts:
+https://toppng.com/show_download/173070/heart-pixel-png-pixel-heart
+
+Background:
+https://indonesian-recipes.com/download/2030-version.html
