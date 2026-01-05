@@ -51,6 +51,14 @@ public class GamePanel extends JPanel {
 	//ending ufo
 	private UFO ufo;
 	
+	//checkpoint variables
+	private int cPoint1X;
+	private int cPoint1Y;
+
+	private int cPoint2X;
+	private int cPoint2Y;
+
+	
 	public void loadLevel(int level) {
 		this.currentLevel = level;
 		
@@ -166,7 +174,6 @@ public class GamePanel extends JPanel {
 
 		//resetting platforms
 		platforms.clear();
-		addPlatforms();
 
 		//reset ufo
 		ufo.x = 6710;
@@ -503,10 +510,6 @@ public class GamePanel extends JPanel {
 	    platforms.add(new Platform(11200, 638, 400, 180, longPlatform));
 	}
 	
-	public void addPlatforms() {
-		
-	}
-	
 
 	//PAINT COMPONENT
 	public void paintComponent(Graphics g) {
@@ -523,8 +526,8 @@ public class GamePanel extends JPanel {
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
 
 		//background 
-		g.drawImage(bg, bgX, 0, bg.getWidth(null), getHeight(), null);
-		g.drawImage(bg, bgX + bg.getWidth(null), 0, bg.getWidth(null), getHeight(), null);
+		g.drawImage(bg, bgX, 0, 1500, 800, null);
+		g.drawImage(bg, bgX + 1500, 0, 1500, 800, null);
 		
 		//platforms
 		for (Platform p : platforms){
