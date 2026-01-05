@@ -12,7 +12,7 @@ import javax.swing.*;
  */
 
 public class GamePanel extends JPanel {
-	
+
 	private GameWindow window;
 	private Input input;
 	private Player player;  
@@ -20,7 +20,7 @@ public class GamePanel extends JPanel {
 	private boolean paused = false;
 	private boolean prevPaused = false;
 	private boolean prevM = false;
-	
+
 	// aliens + hearts
 	private ArrayList<Alien> aliens = new ArrayList<>();
 	private int hearts = 3;
@@ -31,10 +31,10 @@ public class GamePanel extends JPanel {
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 	private int asteroidSpawnRate = 0;
 	private int asteroidSpawnTimer = 0;
-	
+
 	//level
 	private int currentLevel = 1;
-	
+
 	//elapsed time (for display)
 	private int elapsedTime = 0;//in seconds
 	private Timer timeElapsedTimer;
@@ -50,52 +50,54 @@ public class GamePanel extends JPanel {
 
 	//ending ufo
 	private UFO ufo;
-	
+
 	//checkpoint variables
+	private Platform cp1;
+	private Platform cp2;
+
 	private int cPoint1X;
 	private int cPoint1Y;
 
 	private int cPoint2X;
 	private int cPoint2Y;
 
-	
 	public void loadLevel(int level) {
 		this.currentLevel = level;
-		
+
 		platforms.clear();
 		aliens.clear();
 		hearts = 3;
-		
+
 		if (level == 1) {
-	        loadLevel1();
-	        scrollSpeed = 6;
-	        alienSpawnRate = 0; //no aliens
-	        //checkpoints
-	        cPoint1X = 0;
-	        cPoint1Y = 700;
-	        cPoint2X = 0;
-	        cPoint2Y = 3700;
-	        //Load Background
+			loadLevel1();
+			scrollSpeed = 6;
+			alienSpawnRate = 0; //no aliens
+			//checkpoints
+			cPoint1X = 0;
+			cPoint1Y = 700;
+			cPoint2X = 0;
+			cPoint2Y = 3700;
+			//Load Background
 			bg = new ImageIcon("assets/images/gamebg.gif").getImage();
-	    }
+		}
 
-	    if (level == 2) {
-	        loadLevel2();
-	        scrollSpeed = 10;      
-	        alienSpawnRate = 0; 
-	        asteroidSpawnRate = 150;
-	        //Load Background
+		if (level == 2) {
+			loadLevel2();
+			scrollSpeed = 10;      
+			alienSpawnRate = 0; 
+			asteroidSpawnRate = 150;
+			//Load Background
 			bg = new ImageIcon("assets/images/gamebg2.gif").getImage();
-	    }
+		}
 
-	    if (level == 3) {
-	        loadLevel3();
-	        scrollSpeed = 15;
-	        alienSpawnRate = 100; // aliens every ~3 seconds
-	        asteroidSpawnRate = 120;
-	        //Load Background
+		if (level == 3) {
+			loadLevel3();
+			scrollSpeed = 15;
+			alienSpawnRate = 100; // aliens every ~3 seconds
+			asteroidSpawnRate = 120;
+			//Load Background
 			bg = new ImageIcon("assets/images/gamebg3.gif").getImage();
-	    }
+		}
 	}
 
 	//constructor
@@ -130,9 +132,9 @@ public class GamePanel extends JPanel {
 		//load ufo
 		Image ufoImg = new ImageIcon("assets/images/ufo.png").getImage();
 		ufo = new UFO(6710, 460, 260, 190, ufoImg);
-		
+
 		//load alien
-		
+
 		loadLevel(1);
 	}
 
@@ -188,7 +190,7 @@ public class GamePanel extends JPanel {
 		elapsedTime = 0;
 		timeElapsedTimer.stop();
 		timer.stop();
-		
+
 		//reset aliens + heart
 		aliens.clear();
 		//reset asteroids
@@ -293,19 +295,19 @@ public class GamePanel extends JPanel {
 		}
 
 		//checkpoint logic
-		if (voided == true && hearts > 0){
-			voided = false;
-			if (player.x >= cPoint2X){//player is beyond checkpoint 2
-				player.x = cPoint2X;
-				player.y = cPoint2Y;
-			}
-			else if (player.x >= cPoint1X){//player beyond checkpoint 1
-				player.x = cPoint1X;
-				player.y = cPoint1Y;
-			}
-		}
-		
-		else if (voided == true) {//if player touches bottom
+		//if (voided == true && hearts > 0){
+		//voided = false;
+		//if (player.x >= cPoint2X){//player is beyond checkpoint 2
+		//player.x = cPoint2X;
+		//player.y = cPoint2Y;
+		//}
+		//else if (player.x >= cPoint1X){//player beyond checkpoint 1
+		//player.x = cPoint1X;
+		//player.y = cPoint1Y;
+		//}
+		//	}
+
+		if (voided == true) {//if player touches bottom
 			endGame("gameOver");
 			return;
 		}
@@ -327,29 +329,29 @@ public class GamePanel extends JPanel {
 				asteroidSpawnTimer = 0;
 			}
 		}
-		
+
 		// update aliens
 		for (int i = aliens.size() - 1; i >= 0; i--) {
-		    Alien a = aliens.get(i);
-		    // move alien by its own speed
-		    a.update();
-		    // aliens travel relative to the camera
-		    a.x -= scrollSpeed;
+			Alien a = aliens.get(i);
+			// move alien by its own speed
+			a.update();
+			// aliens travel relative to the camera
+			a.x -= scrollSpeed;
 
-		    if (a.x + a.width < 0) {
-		        aliens.remove(i);
-		        continue;
-		    }
+			if (a.x + a.width < 0) {
+				aliens.remove(i);
+				continue;
+			}
 
-		    if (a.getBounds().intersects(player.getBounds())) {
-		        hearts--;
-		        aliens.remove(i);
+			if (a.getBounds().intersects(player.getBounds())) {
+				hearts--;
+				aliens.remove(i);
 
-		        if (hearts <= 0) {
-		            endGame("gameOver");
-		            return;
-		        }
-		    }
+				if (hearts <= 0) {
+					endGame("gameOver");
+					return;
+				}
+			}
 		}
 
 		// update asteroids
@@ -379,7 +381,7 @@ public class GamePanel extends JPanel {
 		if (bgX <= -bg.getWidth(null)){
 			bgX = 0;
 		}
-		
+
 		//platform scroll
 		for (Platform p : platforms){
 			p.x -= scrollSpeed;
@@ -387,16 +389,16 @@ public class GamePanel extends JPanel {
 
 		//ufo scroll
 		ufo.x -= scrollSpeed;
-		
+
 
 	}//end of update
-	
+
 	private void spawnAlien() {
-	    int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
-	    int startY = (int)(Math.random()*(500-100-1)+100); 
-	    Alien a = new Alien(startX, startY, 6);
-	    //a.y = startY - a.height;
-	    aliens.add(a);
+		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
+		int startY = (int)(Math.random()*(500-100-1)+100); 
+		Alien a = new Alien(startX, startY, 6);
+		//a.y = startY - a.height;
+		aliens.add(a);
 	}
 
 	private void spawnAsteroid() {
@@ -405,134 +407,136 @@ public class GamePanel extends JPanel {
 		Asteroid ast = new Asteroid(startX, startY, 6);
 		asteroids.add(ast);
 	}
-	
+
 	private void loadLevel1() {
-	    // SECTION 1 — CHECKPOINT 1 SAFE START
+		// SECTION 1 — CHECKPOINT 1 SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+		cp1 = new Platform(398, 638, 400, 180, longPlatform);
+		platforms.add(cp1);
 		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
 
-	    // SECTION 2 — MID‑AIR RUN SHORT
+		// SECTION 2 — MID‑AIR RUN SHORT
 		platforms.add(new Platform(1720, 500, 150, 160, tallPlatform));
 		platforms.add(new Platform(2200, 500, 150, 160, tallPlatform));
 
-	    // SECTION 3 — MIDAIR LONG PLATFORM
+		// SECTION 3 — MIDAIR LONG PLATFORM
 		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
 		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
 
-	    // SECTION 4 — CHECKPOINT 2 FLOOR PLATFORM
+		// SECTION 4 — CHECKPOINT 2 FLOOR PLATFORM
 		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
 
-	    // SECTION 5 — MID‑AIR RUN SHORT
+		// SECTION 5 — MID‑AIR RUN SHORT
 		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
 		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
 
-	    // SECTION 6 — ENDING UFO PLATFORM
+		// SECTION 6 — ENDING UFO PLATFORM
 		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
 	}
 
 	private void loadLevel2() {
-		
+
 		ufo.x = 9300;		
-	    // SAFE START
-	    platforms.add(new Platform(0, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(398, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(796, 638, 400, 180, longPlatform));
+		// SAFE START
+		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
 
-	    // SECTION 1 — SMALL GAPS, MID HEIGHT
-	    platforms.add(new Platform(1300, 580, 300, 160, longPlatform));
-	    platforms.add(new Platform(1700, 520, 150, 160, tallPlatform));
-	    platforms.add(new Platform(2000, 580, 300, 160, longPlatform));
+		// SECTION 1 — SMALL GAPS, MID HEIGHT
+		platforms.add(new Platform(1300, 580, 300, 160, longPlatform));
+		platforms.add(new Platform(1700, 520, 150, 160, tallPlatform));
+		platforms.add(new Platform(2000, 580, 300, 160, longPlatform));
 
-	    // SECTION 2 — BIG GAP + RESCUE PLATFORM
-	    platforms.add(new Platform(2600, 500, 150, 160, tallPlatform));
-	    platforms.add(new Platform(3000, 638, 400, 180, longPlatform));
+		// SECTION 2 — BIG GAP + RESCUE PLATFORM
+		platforms.add(new Platform(2600, 500, 150, 160, tallPlatform));
+		platforms.add(new Platform(3000, 638, 400, 180, longPlatform));
 
-	    // SECTION 3 — MID‑AIR RUN
-	    platforms.add(new Platform(3500, 480, 150, 160, tallPlatform));
-	    platforms.add(new Platform(3800, 530, 300, 160, longPlatform));
-	    platforms.add(new Platform(4200, 480, 150, 160, tallPlatform));
+		// SECTION 3 — MID‑AIR RUN
+		platforms.add(new Platform(3500, 480, 150, 160, tallPlatform));
+		platforms.add(new Platform(3800, 530, 300, 160, longPlatform));
+		platforms.add(new Platform(4200, 480, 150, 160, tallPlatform));
 
-	    // SECTION 4 — LONG HIGHWAY
-	    platforms.add(new Platform(4600, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(5000, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(5400, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
+		// SECTION 4 — LONG HIGHWAY
+		platforms.add(new Platform(4600, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(5000, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(5400, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
 
-	    // SECTION 5 — HIGH JUMP CHALLENGE
-	    platforms.add(new Platform(6300, 450, 150, 160, tallPlatform));
-	    platforms.add(new Platform(6700, 500, 300, 160, longPlatform));
+		// SECTION 5 — HIGH JUMP CHALLENGE
+		platforms.add(new Platform(6300, 450, 150, 160, tallPlatform));
+		platforms.add(new Platform(6700, 500, 300, 160, longPlatform));
 
-	    // SECTION 6 — CHAOTIC MIX
-	    platforms.add(new Platform(7200, 580, 300, 160, longPlatform));
-	    platforms.add(new Platform(7600, 520, 150, 160, tallPlatform));
-	    platforms.add(new Platform(7900, 580, 300, 160, longPlatform));
+		// SECTION 6 — CHAOTIC MIX
+		platforms.add(new Platform(7200, 580, 300, 160, longPlatform));
+		platforms.add(new Platform(7600, 520, 150, 160, tallPlatform));
+		platforms.add(new Platform(7900, 580, 300, 160, longPlatform));
 
-	    // SECTION 7 — FINAL LONG RUNWAY
-	    platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
+		// SECTION 7 — FINAL LONG RUNWAY
+		platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
 
 	}
 
 	private void loadLevel3() {
-		
+
 		ufo.x = 11700;
-	    // SAFE START
-	    platforms.add(new Platform(0, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+		// SAFE START
+		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
 
-	    // SECTION 1 — HUGE GAP + TALL PLATFORM
-	    platforms.add(new Platform(1100, 500, 150, 160, tallPlatform));
+		// SECTION 1 — HUGE GAP + TALL PLATFORM
+		platforms.add(new Platform(1100, 500, 150, 160, tallPlatform));
 
-	    // SECTION 2 — MID‑AIR RUN
-	    platforms.add(new Platform(1500, 450, 300, 160, longPlatform));
-	    platforms.add(new Platform(1900, 500, 150, 160, tallPlatform));
-	    platforms.add(new Platform(2200, 450, 300, 160, longPlatform));
+		// SECTION 2 — MID‑AIR RUN
+		platforms.add(new Platform(1500, 450, 300, 160, longPlatform));
+		platforms.add(new Platform(1900, 500, 150, 160, tallPlatform));
+		platforms.add(new Platform(2200, 450, 300, 160, longPlatform));
 
-	    // SECTION 3 — GIANT GAP
-	    platforms.add(new Platform(2800, 580, 300, 160, longPlatform));
+		// SECTION 3 — GIANT GAP
+		platforms.add(new Platform(2800, 580, 300, 160, longPlatform));
 
-	    // SECTION 4 — DOUBLE TOWER CLIMB
-	    platforms.add(new Platform(3300, 480, 150, 160, tallPlatform));
-	    platforms.add(new Platform(3600, 420, 150, 160, tallPlatform));
+		// SECTION 4 — DOUBLE TOWER CLIMB
+		platforms.add(new Platform(3300, 480, 150, 160, tallPlatform));
+		platforms.add(new Platform(3600, 420, 150, 160, tallPlatform));
 
-	    // SECTION 5 — LONG HIGHWAY
-	    platforms.add(new Platform(4000, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(4400, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(4800, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(5200, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(5600, 638, 400, 180, longPlatform));
+		// SECTION 5 — LONG HIGHWAY
+		platforms.add(new Platform(4000, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(4400, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(4800, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(5200, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(5600, 638, 400, 180, longPlatform));
 
-	    // SECTION 6 — EVIL MID‑AIR PLATFORM
-	    platforms.add(new Platform(6100, 500, 300, 160, longPlatform));
+		// SECTION 6 — EVIL MID‑AIR PLATFORM
+		platforms.add(new Platform(6100, 500, 300, 160, longPlatform));
 
-	    // SECTION 7 — TALL SPIKE‑LIKE TOWER
-	    platforms.add(new Platform(6500, 420, 150, 160, tallPlatform));
+		// SECTION 7 — TALL SPIKE‑LIKE TOWER
+		platforms.add(new Platform(6500, 420, 150, 160, tallPlatform));
 
-	    // SECTION 8 — CHAOS RUN
-	    platforms.add(new Platform(6900, 580, 300, 160, longPlatform));
-	    platforms.add(new Platform(7300, 520, 150, 160, tallPlatform));
-	    platforms.add(new Platform(7600, 580, 300, 160, longPlatform));
-	    platforms.add(new Platform(8000, 520, 150, 160, tallPlatform));
+		// SECTION 8 — CHAOS RUN
+		platforms.add(new Platform(6900, 580, 300, 160, longPlatform));
+		platforms.add(new Platform(7300, 520, 150, 160, tallPlatform));
+		platforms.add(new Platform(7600, 580, 300, 160, longPlatform));
+		platforms.add(new Platform(8000, 520, 150, 160, tallPlatform));
 
-	    // SECTION 9 — FINAL SUPER HIGHWAY (VERY LONG)
-	    platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(10000, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(10800, 638, 400, 180, longPlatform));
-	    platforms.add(new Platform(11200, 638, 400, 180, longPlatform));
+		// SECTION 9 — FINAL SUPER HIGHWAY (VERY LONG)
+		platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(10000, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(10800, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(11200, 638, 400, 180, longPlatform));
 	}
-	
+
 
 	//PAINT COMPONENT
 	public void paintComponent(Graphics g) {
@@ -551,7 +555,7 @@ public class GamePanel extends JPanel {
 		//background 
 		g.drawImage(bg, bgX, 0, 1500, 800, null);
 		g.drawImage(bg, bgX + 1500, 0, 1500, 800, null);
-		
+
 		//platforms
 		for (Platform p : platforms){
 			p.draw(g);
@@ -562,23 +566,23 @@ public class GamePanel extends JPanel {
 
 		//player
 		player.draw(g);
-		
+
 		// draw aliens
 		for (Alien a : aliens) {
-		    a.draw(g);
+			a.draw(g);
 		}
 
 		// draw asteroids
 		for (Asteroid ast : asteroids) {
 			ast.draw(g);
 		}
-		
+
 		// draw hearts
 		for (int i = 0; i < 3; i++) {
-		    if (i < hearts)
-		        g.drawImage(new ImageIcon("assets/images/heart.png").getImage(), 20 + i * 40, 60, 32, 32, null);
-		    else
-		        g.drawImage(new ImageIcon("assets/images/deadheart.png").getImage(), 20 + i * 40, 60, 32, 32, null);
+			if (i < hearts)
+				g.drawImage(new ImageIcon("assets/images/heart.png").getImage(), 20 + i * 40, 60, 32, 32, null);
+			else
+				g.drawImage(new ImageIcon("assets/images/deadheart.png").getImage(), 20 + i * 40, 60, 32, 32, null);
 		}
 
 		g.setColor(Color.WHITE);
