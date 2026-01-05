@@ -88,6 +88,16 @@ public class GameWinScreen extends JPanel{
 		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 30f));
 		comp.drawString("Time: " + timeString, 300, 350);
 
+		// draw final hearts (larger)
+		int finalHearts = window.getFinalHearts();
+		int heartSize = 96;
+		int startX = 300;
+		int y = 400;
+		for (int i = 0; i < 3; i++) {
+			Image heartImg = new ImageIcon(i < finalHearts ? "assets/images/heart.png" : "assets/images/deadheart.png").getImage();
+			comp.drawImage(heartImg, startX + i * (heartSize + 10), y, heartSize, heartSize, null);
+		}
+
 
 	}//end of paintComponent
 

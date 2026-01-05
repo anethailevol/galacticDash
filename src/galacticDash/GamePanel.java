@@ -40,9 +40,8 @@ public class GamePanel extends JPanel {
 	private Timer timeElapsedTimer;
 
 	//Scrolling
-	private Image bg1, bg2;
-	private int bgX1 = 0;
-	private int bgX2;
+	private Image bg;
+	private int bgX = 0;
 	private int scrollSpeed = 4;
 
 	//platforms
@@ -63,6 +62,8 @@ public class GamePanel extends JPanel {
 	        loadLevel1();
 	        scrollSpeed = 6;
 	        alienSpawnRate = 0; //no aliens
+	        //Load Background
+			bg = new ImageIcon("assets/images/gamebg.gif").getImage();
 	    }
 
 	    if (level == 2) {
@@ -70,6 +71,8 @@ public class GamePanel extends JPanel {
 	        scrollSpeed = 10;      
 	        alienSpawnRate = 0; 
 	        asteroidSpawnRate = 150;
+	        //Load Background
+			bg = new ImageIcon("assets/images/gamebg2.gif").getImage();
 	    }
 
 	    if (level == 3) {
@@ -77,6 +80,8 @@ public class GamePanel extends JPanel {
 	        scrollSpeed = 15;
 	        alienSpawnRate = 100; // aliens every ~3 seconds
 	        asteroidSpawnRate = 120;
+	        //Load Background
+			bg = new ImageIcon("assets/images/gamebg3.gif").getImage();
 	    }
 	}
 
@@ -104,11 +109,6 @@ public class GamePanel extends JPanel {
 			if(!paused)
 				elapsedTime++;//increases by 1 per second
 		});
-
-		//Load Background
-		bg1 = new ImageIcon("assets/images/background1.gif").getImage();
-		bg2 = new ImageIcon("assets/images/background2.gif").getImage();
-		bgX2 = bg1.getWidth(null); 
 
 		//load platforms
 		longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
@@ -138,6 +138,7 @@ public class GamePanel extends JPanel {
 	public void endGame(String screen) {
 		timer.stop();
 		timeElapsedTimer.stop();
+		window.setFinalHearts(hearts);
 		window.showScreen(screen);
 
 		//reset all inputs
@@ -161,8 +162,7 @@ public class GamePanel extends JPanel {
 		prevM = false;
 
 		//reset scrolling
-		bgX1 = 0;
-		bgX2 = bg1.getWidth(null);
+		bgX = 0;
 
 		//resetting platforms
 		platforms.clear();
@@ -350,19 +350,11 @@ public class GamePanel extends JPanel {
 		}
 
 		//Scrolling mechanism
-		bgX1 -= scrollSpeed;
-		bgX2 -= scrollSpeed;
-
-		// If bg1 goes off screen, move it to the right of bg2
-		if (bgX1 + bg1.getWidth(null) <= 0) {
-			bgX1 = bgX2 + bg2.getWidth(null);
+		bgX -= scrollSpeed;
+		if (bgX <= -bg.getWidth(null)){
+			bgX = 0;
 		}
-
-		// If bg2 goes off screen, move it to the right of bg1
-		if (bgX2 + bg2.getWidth(null) <= 0) {
-			bgX2 = bgX1 + bg1.getWidth(null);
-		}
-
+		
 		//platform scroll
 		for (Platform p : platforms){
 			p.x -= scrollSpeed;
@@ -526,10 +518,10 @@ public class GamePanel extends JPanel {
 
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
 
-		//background
-		g.drawImage(bg1, bgX1, 0, null);
-		g.drawImage(bg2, bgX2, 0, null);
-
+		//background 
+		g.drawImage(bg, bgX, 0, bg.getWidth(null), getHeight(), null);
+		g.drawImage(bg, bgX + bg.getWidth(null), 0, bg.getWidth(null), getHeight(), null);
+		
 		//platforms
 		for (Platform p : platforms){
 			p.draw(g);

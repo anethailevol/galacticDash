@@ -22,6 +22,7 @@ public class GameWindow extends JFrame  {
 
 	private int currentLevel = 1;//default level is 1
 	private int finalTime;//final gameplay time
+	private int finalHearts = 0; // store hearts left at end
 
 	//game window constructor
 	public GameWindow() {
@@ -79,6 +80,14 @@ public class GameWindow extends JFrame  {
 	public void setTimer(int time){
 		this.finalTime = time;//final time for gameplay
 	}//end of setTime
+
+	public void setFinalHearts(int hearts) {
+		this.finalHearts = hearts;
+	}
+
+	public int getFinalHearts() {
+		return finalHearts;
+	}
 
 	public int getTimer() {
 		return finalTime;//return final time
