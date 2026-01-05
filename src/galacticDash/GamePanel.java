@@ -390,21 +390,6 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void loadLevel1() {
-	    addPlatforms(); // custom level 1 layout
-	}
-
-	private void loadLevel2() {
-	    addPlatforms(); // replace with level 2 layout
-	}
-
-	private void loadLevel3() {
-	    addPlatforms(); // replace with level 3 layout
-	    Alien a = new Alien(2000, 500, 6);
-	    a.y = 500 - a.height;
-	    aliens.add(a);
-	}
-	
-	public void addPlatforms() {
 		//add platforms
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -427,6 +412,103 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
+	}
+
+	private void loadLevel2() {
+	    // SAFE START
+	    platforms.add(new Platform(0, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(796, 638, 400, 180, longPlatform));
+
+	    // SECTION 1 — SMALL GAPS, MID HEIGHT
+	    platforms.add(new Platform(1300, 580, 300, 160, longPlatform));
+	    platforms.add(new Platform(1700, 520, 150, 160, tallPlatform));
+	    platforms.add(new Platform(2000, 580, 300, 160, longPlatform));
+
+	    // SECTION 2 — BIG GAP + RESCUE PLATFORM
+	    platforms.add(new Platform(2600, 500, 150, 160, tallPlatform));
+	    platforms.add(new Platform(3000, 638, 400, 180, longPlatform));
+
+	    // SECTION 3 — MID‑AIR RUN
+	    platforms.add(new Platform(3500, 480, 150, 160, tallPlatform));
+	    platforms.add(new Platform(3800, 530, 300, 160, longPlatform));
+	    platforms.add(new Platform(4200, 480, 150, 160, tallPlatform));
+
+	    // SECTION 4 — LONG HIGHWAY
+	    platforms.add(new Platform(4600, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(5000, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(5400, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
+
+	    // SECTION 5 — HIGH JUMP CHALLENGE
+	    platforms.add(new Platform(6300, 450, 150, 160, tallPlatform));
+	    platforms.add(new Platform(6700, 500, 300, 160, longPlatform));
+
+	    // SECTION 6 — CHAOTIC MIX
+	    platforms.add(new Platform(7200, 580, 300, 160, longPlatform));
+	    platforms.add(new Platform(7600, 520, 150, 160, tallPlatform));
+	    platforms.add(new Platform(7900, 580, 300, 160, longPlatform));
+
+	    // SECTION 7 — FINAL LONG RUNWAY
+	    platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
+
+	}
+
+	private void loadLevel3() {
+	    // SAFE START
+	    platforms.add(new Platform(0, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(398, 638, 400, 180, longPlatform));
+
+	    // SECTION 1 — HUGE GAP + TALL PLATFORM
+	    platforms.add(new Platform(1100, 500, 150, 160, tallPlatform));
+
+	    // SECTION 2 — MID‑AIR RUN
+	    platforms.add(new Platform(1500, 450, 300, 160, longPlatform));
+	    platforms.add(new Platform(1900, 500, 150, 160, tallPlatform));
+	    platforms.add(new Platform(2200, 450, 300, 160, longPlatform));
+
+	    // SECTION 3 — GIANT GAP
+	    platforms.add(new Platform(2800, 580, 300, 160, longPlatform));
+
+	    // SECTION 4 — DOUBLE TOWER CLIMB
+	    platforms.add(new Platform(3300, 480, 150, 160, tallPlatform));
+	    platforms.add(new Platform(3600, 420, 150, 160, tallPlatform));
+
+	    // SECTION 5 — LONG HIGHWAY
+	    platforms.add(new Platform(4000, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(4400, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(4800, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(5200, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(5600, 638, 400, 180, longPlatform));
+
+	    // SECTION 6 — EVIL MID‑AIR PLATFORM
+	    platforms.add(new Platform(6100, 500, 300, 160, longPlatform));
+
+	    // SECTION 7 — TALL SPIKE‑LIKE TOWER
+	    platforms.add(new Platform(6500, 420, 150, 160, tallPlatform));
+
+	    // SECTION 8 — CHAOS RUN
+	    platforms.add(new Platform(6900, 580, 300, 160, longPlatform));
+	    platforms.add(new Platform(7300, 520, 150, 160, tallPlatform));
+	    platforms.add(new Platform(7600, 580, 300, 160, longPlatform));
+	    platforms.add(new Platform(8000, 520, 150, 160, tallPlatform));
+
+	    // SECTION 9 — FINAL SUPER HIGHWAY (VERY LONG)
+	    platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(10000, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(10800, 638, 400, 180, longPlatform));
+	    platforms.add(new Platform(11200, 638, 400, 180, longPlatform));
+	}
+	
+	public void addPlatforms() {
+		
 	}
 	
 
