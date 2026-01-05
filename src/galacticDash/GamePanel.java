@@ -407,6 +407,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void loadLevel2() {
+		
+		ufo.x = 9300;		
 	    // SAFE START
 	    platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 	    platforms.add(new Platform(398, 638, 400, 180, longPlatform));
