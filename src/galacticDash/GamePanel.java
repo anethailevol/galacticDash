@@ -70,6 +70,11 @@ public class GamePanel extends JPanel {
 	        loadLevel1();
 	        scrollSpeed = 6;
 	        alienSpawnRate = 0; //no aliens
+	        //checkpoints
+	        cPoint1X = 0;
+	        cPoint1Y = 700;
+	        cPoint2X = 0;
+	        cPoint2Y = 3700;
 	        //Load Background
 			bg = new ImageIcon("assets/images/gamebg.gif").getImage();
 	    }
@@ -287,7 +292,20 @@ public class GamePanel extends JPanel {
 			voided = true;
 		}
 
-		if (voided == true) {//if player touches bottom
+		//checkpoint logic
+		if (voided == true && hearts > 0){
+			voided = false;
+			if (player.x >= cPoint2X){//player is beyond checkpoint 2
+				player.x = cPoint2X;
+				player.y = cPoint2Y;
+			}
+			else if (player.x >= cPoint1X){//player beyond checkpoint 1
+				player.x = cPoint1X;
+				player.y = cPoint1Y;
+			}
+		}
+		
+		else if (voided == true) {//if player touches bottom
 			endGame("gameOver");
 			return;
 		}
@@ -389,25 +407,30 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void loadLevel1() {
-		//add platforms
+	    // SECTION 1 — CHECKPOINT 1 SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
 
+	    // SECTION 2 — MID‑AIR RUN SHORT
 		platforms.add(new Platform(1720, 500, 150, 160, tallPlatform));
 		platforms.add(new Platform(2200, 500, 150, 160, tallPlatform));
 
+	    // SECTION 3 — MIDAIR LONG PLATFORM
 		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
 		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
 
+	    // SECTION 4 — CHECKPOINT 2 FLOOR PLATFORM
 		platforms.add(new Platform(3658, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
 
+	    // SECTION 5 — MID‑AIR RUN SHORT
 		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
 		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
 
+	    // SECTION 6 — ENDING UFO PLATFORM
 		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
