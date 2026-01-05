@@ -48,6 +48,19 @@ public class GameOverScreen extends JPanel {
 			window.showScreen("start");
 		});
 		
+		//retry button
+		JButton retry = new JButton ("Retry");
+		retry.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
+		retry.setForeground(Color.BLACK); 
+		retry.setBackground(Color.WHITE); 
+		retry.setBounds(650, 600, 200, 50);
+		add(retry);
+		
+		retry.addActionListener(e -> {
+			
+			window.showScreen("game");
+		});
+		
 		//levels button
 		JButton levels = new JButton("Levels");
 		levels.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
@@ -59,6 +72,7 @@ public class GameOverScreen extends JPanel {
 		levels.addActionListener(e -> {
 			window.showScreen("levels");
 		});
+		
 
 	}
 
