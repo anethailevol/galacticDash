@@ -26,6 +26,11 @@ public class GamePanel extends JPanel {
 	private int hearts = 3;
 	private int alienSpawnRate = 0;   // frames between spawns
 	private int alienSpawnTimer = 0;  // counts frames
+
+	// asteroids (level 2 & 3)
+	private ArrayList<Asteroid> asteroids = new ArrayList<>();
+	private int asteroidSpawnRate = 0;
+	private int asteroidSpawnTimer = 0;
 	
 	//level
 	private int currentLevel = 1;
@@ -62,14 +67,16 @@ public class GamePanel extends JPanel {
 
 	    if (level == 2) {
 	        loadLevel2();
-	        scrollSpeed = 10;      // faster scroll
-	        alienSpawnRate = 200; // 5 seconds at 15ms per frame
+	        scrollSpeed = 10;      
+	        alienSpawnRate = 0; 
+	        asteroidSpawnRate = 150;
 	    }
 
 	    if (level == 3) {
 	        loadLevel3();
 	        scrollSpeed = 15;
 	        alienSpawnRate = 100; // aliens every ~3 seconds
+	        asteroidSpawnRate = 120;
 	    }
 	}
 
@@ -172,6 +179,9 @@ public class GamePanel extends JPanel {
 		
 		//reset aliens + heart
 		aliens.clear();
+		//reset asteroids
+		asteroids.clear();
+		asteroidSpawnTimer = 0;
 		hearts = 3;
 	}//end of reset
 
@@ -283,11 +293,23 @@ public class GamePanel extends JPanel {
 				alienSpawnTimer = 0;
 			}
 		}
+
+		// asteroid spawn: only when enabled for the level
+		if (asteroidSpawnRate > 0) {
+			asteroidSpawnTimer++;
+			if (asteroidSpawnTimer >= asteroidSpawnRate) {
+				spawnAsteroid();
+				asteroidSpawnTimer = 0;
+			}
+		}
 		
 		// update aliens
 		for (int i = aliens.size() - 1; i >= 0; i--) {
 		    Alien a = aliens.get(i);
-		    a.x -= scrollSpeed; //move to left
+		    // move alien by its own speed
+		    a.update();
+		    // aliens travel relative to the camera
+		    a.x -= scrollSpeed;
 
 		    if (a.x + a.width < 0) {
 		        aliens.remove(i);
@@ -303,6 +325,28 @@ public class GamePanel extends JPanel {
 		            return;
 		        }
 		    }
+		}
+
+		// update asteroids
+		for (int i = asteroids.size() - 1; i >= 0; i--) {
+			Asteroid ast = asteroids.get(i);
+			ast.update();
+			ast.x -= scrollSpeed;
+
+			if (ast.isOffScreen()) {
+				asteroids.remove(i);
+				continue;
+			}
+
+			if (ast.getBounds().intersects(player.getBounds())) {
+				hearts--;
+				asteroids.remove(i);
+
+				if (hearts <= 0) {
+					endGame("gameOver");
+					return;
+				}
+			}
 		}
 
 		//Scrolling mechanism
@@ -332,8 +376,17 @@ public class GamePanel extends JPanel {
 	
 	private void spawnAlien() {
 	    int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
-	    int startY = 400;
-	    aliens.add(new Alien(startX, startY, 6));
+	    int startY = (int)(Math.random()*(500-100-1)+100); 
+	    Alien a = new Alien(startX, startY, 6);
+	    //a.y = startY - a.height;
+	    aliens.add(a);
+	}
+
+	private void spawnAsteroid() {
+		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
+		int startY = 200; // fixed height; adjust if you want different lanes
+		Asteroid ast = new Asteroid(startX, startY, 6);
+		asteroids.add(ast);
 	}
 	
 	private void loadLevel1() {
@@ -346,7 +399,9 @@ public class GamePanel extends JPanel {
 
 	private void loadLevel3() {
 	    addPlatforms(); // replace with level 3 layout
-	    aliens.add(new Alien(2000, 500, 6));
+	    Alien a = new Alien(2000, 500, 6);
+	    a.y = 500 - a.height;
+	    aliens.add(a);
 	}
 	
 	public void addPlatforms() {
@@ -407,6 +462,11 @@ public class GamePanel extends JPanel {
 		// draw aliens
 		for (Alien a : aliens) {
 		    a.draw(g);
+		}
+
+		// draw asteroids
+		for (Asteroid ast : asteroids) {
+			ast.draw(g);
 		}
 		
 		// draw hearts

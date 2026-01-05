@@ -3,19 +3,19 @@ package galacticDash;
 import java.awt.*;
 import javax.swing.ImageIcon;
 
-public class Alien {
+public class Asteroid {
     public int x, y, width, height;
     private Image img;
     private int speed;
 
-    public Alien(int x, int y, int speed) {
-        this.img = new ImageIcon("assets/images/alien.gif").getImage();
+    public Asteroid(int x, int y, int speed) {
+        this.img = new ImageIcon("assets/images/asteroid.gif").getImage();
         this.x = x;
         this.y = y;
         this.speed = speed;
 
-        this.width = 80;
-        this.height = 100;
+        this.width = 60;
+        this.height = 60;
     }
 
     public void update() {

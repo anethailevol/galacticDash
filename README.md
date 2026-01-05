@@ -24,3 +24,6 @@ https://toppng.com/show_download/173070/heart-pixel-png-pixel-heart
 
 Background:
 https://indonesian-recipes.com/download/2030-version.html
+
+asteroid:
+https://porter.vercel.app/posts/asteroid-clipart-gif/
