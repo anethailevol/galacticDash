@@ -74,7 +74,6 @@ public class GamePanel extends JPanel {
 			//checkpoint 2
 			cPoint2X = 3670;
 			//Load Background
-			bg = new ImageIcon("assets/images/gamebg.gif").getImage();
 		}
 
 		if (level == 2) {
@@ -85,7 +84,6 @@ public class GamePanel extends JPanel {
 			//checkpoint 2
 			cPoint2X = 4800;
 			//Load Background
-			bg = new ImageIcon("assets/images/gamebg2.gif").getImage();
 		}
 
 		if (level == 3) {
@@ -96,7 +94,6 @@ public class GamePanel extends JPanel {
 			//checkpoint 2
 			cPoint2X = 4300;
 			//Load Background
-			bg = new ImageIcon("assets/images/gamebg3.gif").getImage();
 		}
 	}
 
@@ -124,6 +121,10 @@ public class GamePanel extends JPanel {
 			if(!paused)
 				elapsedTime++;//increases by 1 per second
 		});
+		
+		//load background:
+		bg = new ImageIcon("assets/images/gamebg.gif").getImage();
+
 
 		//load platforms
 		longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
@@ -134,8 +135,9 @@ public class GamePanel extends JPanel {
 		ufo = new UFO(6710, 460, 260, 190, ufoImg);
 
 		//load alien
-
 		loadLevel(1);
+		
+		
 	}
 
 	public int getElapsedTime() {
@@ -585,8 +587,8 @@ public class GamePanel extends JPanel {
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
 
 		//background 
-		g.drawImage(bg, bgX, 0, 1500, 800, null);
-		g.drawImage(bg, bgX + 1500, 0, 1500, 800, null);
+		g.drawImage(bg, bgX, 0, getWidth(), getHeight(), null);
+		g.drawImage(bg, bgX + getWidth(), 0, getWidth(), getHeight(), null);
 
 		//platforms
 		for (Platform p : platforms){

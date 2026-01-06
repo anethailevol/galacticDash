@@ -14,8 +14,8 @@ public class Alien {
         this.y = y;
         this.speed = speed;
 
-        this.width = 80;
-        this.height = 100;
+        this.width = 100;
+        this.height = 150;
     }
 
     public void update() {
