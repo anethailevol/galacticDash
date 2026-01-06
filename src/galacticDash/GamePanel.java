@@ -52,14 +52,12 @@ public class GamePanel extends JPanel {
 	private UFO ufo;
 
 	//checkpoint variables
-	private Platform cp1;
-	private Platform cp2;
-
-	private int cPoint1X;
-	private int cPoint1Y;
-
+	private int currentCP = 1;
+	private int offset = 0;
+	private int cPoint1X = 0;
+	private int cPoint1Y = 500;
 	private int cPoint2X;
-	private int cPoint2Y;
+	private int cPoint2Y = 500;
 
 	public void loadLevel(int level) {
 		this.currentLevel = level;
@@ -72,11 +70,9 @@ public class GamePanel extends JPanel {
 			loadLevel1();
 			scrollSpeed = 6;
 			alienSpawnRate = 0; //no aliens
-			//checkpoints
-			cPoint1X = 0;
-			cPoint1Y = 700;
-			cPoint2X = 0;
-			cPoint2Y = 3700;
+			asteroidSpawnRate = 0;//no asteroids
+			//checkpoint 2
+			cPoint2X = 3670;
 			//Load Background
 			bg = new ImageIcon("assets/images/gamebg.gif").getImage();
 		}
@@ -86,6 +82,8 @@ public class GamePanel extends JPanel {
 			scrollSpeed = 10;      
 			alienSpawnRate = 0; 
 			asteroidSpawnRate = 150;
+			//checkpoint 2
+			cPoint2X = 4800;
 			//Load Background
 			bg = new ImageIcon("assets/images/gamebg2.gif").getImage();
 		}
@@ -95,6 +93,8 @@ public class GamePanel extends JPanel {
 			scrollSpeed = 15;
 			alienSpawnRate = 100; // aliens every ~3 seconds
 			asteroidSpawnRate = 120;
+			//checkpoint 2
+			cPoint2X = 4300;
 			//Load Background
 			bg = new ImageIcon("assets/images/gamebg3.gif").getImage();
 		}
@@ -181,6 +181,10 @@ public class GamePanel extends JPanel {
 
 		//resetting platforms
 		platforms.clear();
+
+		//reset checkpoints
+		currentCP = 0;
+		offset = 0;
 
 		//reset ufo
 		ufo.x = 6710;
@@ -277,8 +281,17 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
-
-		//void detection (game over)
+		
+		int playerWorldX = player.x + offset;
+		if (playerWorldX >= cPoint2X && currentCP < 2){//checkpoint 2 mark
+			currentCP = 2;
+		}
+		
+		if (player.x <=-150){//if player is too far into space on left
+			voided = true;
+		}
+		
+		//void detection ground
 		int groundY = 800;
 		if (!player.onGround){
 			int feet = player.y + player.height;//sprite bottom
@@ -290,27 +303,47 @@ public class GamePanel extends JPanel {
 			}
 		}
 
-		if (player.x <=-150){//if player is too far into space on left
-			voided = true;
-		}
-
 		//checkpoint logic
-		//if (voided == true && hearts > 0){
-		//voided = false;
-		//if (player.x >= cPoint2X){//player is beyond checkpoint 2
-		//player.x = cPoint2X;
-		//player.y = cPoint2Y;
-		//}
-		//else if (player.x >= cPoint1X){//player beyond checkpoint 1
-		//player.x = cPoint1X;
-		//player.y = cPoint1Y;
-		//}
-		//	}
+		if (voided == true){
+		    hearts--;
+		    
+		    if (hearts <= 0){//no hearts left
+		        endGame("gameOver");
+		        return;
+		    }
+		    
+		    //respawning based off camera
+		    int respawnX = 0;
+		    int respawnY = 500;
+		    
+		    if (currentCP == 1){//first checkpoint
+		    	respawnX = cPoint1X;
+		        respawnY = cPoint1Y;
+		    }
+		    else if (currentCP == 2){//second checkppoint
+		    	respawnX = cPoint2X;
+		        respawnY = cPoint2Y;
+		    }
 
-		if (voided == true) {//if player touches bottom
-			endGame("gameOver");
-			return;
-		}
+		    int oldOffset = offset;//reset offset
+		    offset = respawnX;//new player spawning point
+		    int shiftWorld = oldOffset - offset;//shifting world based off respawn and offset
+
+		    //shifting objects back
+		    for (Platform p : platforms){
+		        p.x += shiftWorld;
+		    }
+		    ufo.x += shiftWorld;
+		    bgX += shiftWorld;
+
+		    //placing player back on the screen
+		    player.x = respawnX - offset + 100;//bit more forward so not touching left
+		    player.y = respawnY;
+		    player.velocity = 0;
+
+		    voided = false;
+		    return;
+		}//end of voiding
 
 		// alien spawn: only when a positive spawn rate is set for the level
 		if (alienSpawnRate > 0) {
@@ -390,6 +423,8 @@ public class GamePanel extends JPanel {
 		//ufo scroll
 		ufo.x -= scrollSpeed;
 
+		//offset update using scrollspeed
+		offset += scrollSpeed;
 
 	}//end of update
 
@@ -412,8 +447,6 @@ public class GamePanel extends JPanel {
 		// SECTION 1 — CHECKPOINT 1 SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
-		cp1 = new Platform(398, 638, 400, 180, longPlatform);
-		platforms.add(cp1);
 		platforms.add(new Platform(796, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(1194, 638, 400, 180, longPlatform));
 
@@ -487,7 +520,7 @@ public class GamePanel extends JPanel {
 
 	private void loadLevel3() {
 
-		ufo.x = 11700;
+		ufo.x = 11500;
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -549,7 +582,6 @@ public class GamePanel extends JPanel {
 			GraphicsEnvironment ge =  GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(pixelFont);
 		} 
-
 		catch (IOException|FontFormatException e){pixelFont = new Font("Monospaced", Font.PLAIN, 18);}
 
 		//background 
@@ -563,7 +595,6 @@ public class GamePanel extends JPanel {
 
 		//ufo
 		ufo.draw(g);
-
 		//player
 		player.draw(g);
 
