@@ -82,7 +82,7 @@ public class GamePanel extends JPanel {
 
 		if (level == 2) {
 			loadLevel2();
-			scrollSpeed = 10;      
+			scrollSpeed = 8;      
 			alienSpawnRate = 0; 
 			asteroidSpawnRate = 150;
 			//checkpoint 2
@@ -93,7 +93,7 @@ public class GamePanel extends JPanel {
 		if (level == 3) {
 			loadLevel3();
 			scrollSpeed = 15;
-			alienSpawnRate = 100; // aliens every ~3 seconds
+			alienSpawnRate = 150;
 			asteroidSpawnRate = 120;
 			//checkpoint 2
 			cPoint2X = 4300;
@@ -354,7 +354,7 @@ public class GamePanel extends JPanel {
 		    return;
 		}//end of voiding
 
-		// alien spawn: only when a positive spawn rate is set for the level
+		// alien spawn
 		if (alienSpawnRate > 0) {
 			alienSpawnTimer++;
 			if (alienSpawnTimer >= alienSpawnRate) {
@@ -440,7 +440,7 @@ public class GamePanel extends JPanel {
 	private void spawnAlien() {
 		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
 		int startY = (int)(Math.random()*(500-100-1)+100); 
-		Alien a = new Alien(startX, startY, 6);
+		Alien a = new Alien(startX, startY, 5);
 		//a.y = startY - a.height;
 		aliens.add(a);
 	}
@@ -453,6 +453,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void loadLevel1() {
+		
 		// SECTION 1 — CHECKPOINT 1 SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -511,7 +512,7 @@ public class GamePanel extends JPanel {
 
 	private void loadLevel2() {
 
-		ufo.x = 9300;		
+		ufo.x = 20000;		
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -546,11 +547,48 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(7600, 520, 150, 160, tallPlatform));
 		platforms.add(new Platform(7900, 580, 300, 160, longPlatform));
 
-		// SECTION 7 — FINAL LONG RUNWAY
+		// SECTION 7 — LONG RUNWAY
 		platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
+		
 		platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
+		
 		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
+		
+		
+		// SECTION 8 — EXTENDED HIGHWAY
+		platforms.add(new Platform(10000, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(10800, 638, 400, 180, longPlatform));
+
+		// SECTION 9 — MID‑AIR + TALL MIX
+		platforms.add(new Platform(11200, 560, 300, 160, longPlatform));
+		platforms.add(new Platform(11600, 500, 150, 160, tallPlatform));
+		platforms.add(new Platform(11900, 560, 300, 160, longPlatform));
+
+		// SECTION 10 — BIG GAP + RESCUE PLATFORM
+		platforms.add(new Platform(12500, 480, 150, 160, tallPlatform));
+		platforms.add(new Platform(12900, 638, 400, 180, longPlatform));
+
+		// SECTION 11 — CHAOTIC MID‑AIR RUN
+		platforms.add(new Platform(13400, 520, 300, 160, longPlatform));
+		platforms.add(new Platform(13800, 460, 150, 160, tallPlatform));
+		platforms.add(new Platform(14100, 520, 300, 160, longPlatform));
+
+		// SECTION 12 — LONG HIGHWAY 2.0
+		platforms.add(new Platform(14600, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(15000, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(15400, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(15800, 638, 400, 180, longPlatform));
+
+		// SECTION 13 — HIGH JUMP + DROP
+		platforms.add(new Platform(16300, 450, 150, 160, tallPlatform));
+		platforms.add(new Platform(16700, 580, 300, 160, longPlatform));
+
+		// SECTION 14 — FINAL SUPER‑LONG RUNWAY
+		platforms.add(new Platform(17200, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(17600, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(18000, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(18400, 638, 400, 180, longPlatform));
 
 	}
 
@@ -598,12 +636,54 @@ public class GamePanel extends JPanel {
 		// SECTION 9 — FINAL SUPER HIGHWAY (VERY LONG)
 		platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(10000, 638, 400, 180, longPlatform));
+		
 		platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(10800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(11200, 638, 400, 180, longPlatform));
+		
+		// SECTION 10 — CHAOTIC MID-AIR MIX
+		platforms.add(new Platform(11600, 520, 300, 160, longPlatform));
+		platforms.add(new Platform(12000, 460, 150, 160, tallPlatform));
+		platforms.add(new Platform(12300, 520, 300, 160, longPlatform));
+
+		// SECTION 11 — BIG GAP + HIGH PLATFORM
+		platforms.add(new Platform(12900, 430, 150, 160, tallPlatform));
+		platforms.add(new Platform(13200, 580, 300, 160, longPlatform));
+
+		// SECTION 12 — DOUBLE TOWER CLIMB 2.0
+		platforms.add(new Platform(13700, 480, 150, 160, tallPlatform));
+		platforms.add(new Platform(14000, 420, 150, 160, tallPlatform));
+		platforms.add(new Platform(14300, 480, 150, 160, tallPlatform));
+
+		// SECTION 13 — MID-AIR RUNWAY (short, not too long)
+		platforms.add(new Platform(14700, 540, 300, 160, longPlatform));
+		platforms.add(new Platform(15000, 500, 300, 160, longPlatform));
+
+		// SECTION 14 — CHAOS JUMPS
+		platforms.add(new Platform(15400, 580, 300, 160, longPlatform));
+		platforms.add(new Platform(15800, 520, 150, 160, tallPlatform));
+		platforms.add(new Platform(16100, 580, 300, 160, longPlatform));
+
+		// SECTION 15 — HIGH/LOW MIX
+		platforms.add(new Platform(16600, 450, 150, 160, tallPlatform));
+		platforms.add(new Platform(16900, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(17300, 500, 300, 160, longPlatform));
+
+		// SECTION 16 — EVIL GAP + RESCUE PLATFORM
+		platforms.add(new Platform(17800, 430, 150, 160, tallPlatform));
+		platforms.add(new Platform(18100, 580, 300, 160, longPlatform));
+
+		// SECTION 17 — FINAL CHALLENGE SECTION (no long runway)
+		platforms.add(new Platform(18600, 520, 300, 160, longPlatform));
+		platforms.add(new Platform(19000, 460, 150, 160, tallPlatform));
+		platforms.add(new Platform(19300, 520, 300, 160, longPlatform));
+		platforms.add(new Platform(19700, 580, 300, 160, longPlatform));
+
+		// SECTION 18 — SHORT FINAL RUNWAY (just enough for UFO)
+		platforms.add(new Platform(20200, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(20600, 638, 400, 180, longPlatform));
+		
 	}
 
 
