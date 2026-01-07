@@ -48,6 +48,10 @@ public class GamePanel extends JPanel {
 	private Image longPlatform, tallPlatform;
 	private ArrayList<Platform> platforms = new ArrayList<>();
 
+	//checkpoints
+	private Image cp1;
+	private Image cp2;
+
 	//ending ufo
 	private UFO ufo;
 
@@ -129,6 +133,10 @@ public class GamePanel extends JPanel {
 		//load platforms
 		longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
 		tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
+
+		//load checkpoints
+		cp1 = new ImageIcon("assets/images/cp1.png").getImage();
+		cp2 = new ImageIcon("assets/images/cp2.png").getImage();
 
 		//load ufo
 		Image ufoImg = new ImageIcon("assets/images/ufo.png").getImage();
@@ -305,7 +313,7 @@ public class GamePanel extends JPanel {
 			}
 		}
 
-		//checkpoint logic
+		//CHECKPOINT LOGIC W/ RESPAWNING
 		if (voided == true){
 		    hearts--;
 		    
@@ -342,7 +350,6 @@ public class GamePanel extends JPanel {
 		    player.x = respawnX - offset + 100;//bit more forward so not touching left
 		    player.y = respawnY;
 		    player.velocity = 0;
-
 		    voided = false;
 		    return;
 		}//end of voiding
@@ -590,6 +597,14 @@ public class GamePanel extends JPanel {
 		g.drawImage(bg, bgX, 0, getWidth(), getHeight(), null);
 		g.drawImage(bg, bgX + getWidth(), 0, getWidth(), getHeight(), null);
 
+		//checkpoint images x values
+		int cp1X = (cPoint1X + 50) - offset;
+		int cp2X = cPoint2X - offset;
+
+		//checkpoint flags
+		g.drawImage(cp1, cp1X, cPoint1Y, 100, 150, null);
+		g.drawImage(cp2, cp2X, cPoint2Y, 100, 150, null);
+		
 		//platforms
 		for (Platform p : platforms){
 			p.draw(g);

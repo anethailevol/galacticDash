@@ -19,6 +19,12 @@ https://tenor.com/view/glorp-spin-360-gif-360-glorp-spin-gif-1499978391099980841
 alien gif:
 https://tenor.com/view/gog-the-alien-alien-dog-labubu-gogfufu-labubu-hehe-gif-17152290720086795410
 
+UFO image:
+https://www.istockphoto.com/vector/pixel-art-alien-spaceship-ufo-vector-8bit-gaming-vehicle-gm1406020808-457724213
+
+checkpoints:
+https://www.freepik.com/vectors/pixel-flags
+
 Hearts:
 https://toppng.com/show_download/173070/heart-pixel-png-pixel-heart
 
