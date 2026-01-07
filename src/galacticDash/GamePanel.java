@@ -369,7 +369,7 @@ public class GamePanel extends JPanel {
 				p.x += shiftWorld;
 			}
 			ufo.x += shiftWorld;
-			bgX += shiftWorld;
+			bgX -= shiftWorld;
 
 			//placing player back on the screen
 			player.x = respawnX - offset + 100;//bit more forward so not touching left
