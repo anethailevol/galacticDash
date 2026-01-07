@@ -49,8 +49,8 @@ public class GamePanel extends JPanel {
 	private ArrayList<Platform> platforms = new ArrayList<>();
 
 	//checkpoints
-	private Image cp1;
-	private Image cp2;
+	private Image cpRed;
+	private Image cpBlue;
 
 	//ending ufo
 	private UFO ufo;
@@ -62,6 +62,10 @@ public class GamePanel extends JPanel {
 	private int cPoint1Y = 500;
 	private int cPoint2X;
 	private int cPoint2Y = 500;
+	private int cPoint3X;
+	private int cPoint3Y = 500;
+	private int cPoint4X;
+	private int cPoint4Y = 500;
 
 	public void loadLevel(int level) {
 		this.currentLevel = level;
@@ -75,8 +79,10 @@ public class GamePanel extends JPanel {
 			scrollSpeed = 6;
 			alienSpawnRate = 0; //no aliens
 			asteroidSpawnRate = 0;//no asteroids
-			//checkpoint 2
+			//checkpoints
 			cPoint2X = 3670;
+			cPoint3X = 8300;
+			cPoint4X = 12900;
 			//Load Background
 		}
 
@@ -125,7 +131,7 @@ public class GamePanel extends JPanel {
 			if(!paused)
 				elapsedTime++;//increases by 1 per second
 		});
-		
+
 		//load background:
 		bg = new ImageIcon("assets/images/gamebg.gif").getImage();
 
@@ -135,17 +141,16 @@ public class GamePanel extends JPanel {
 		tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
 
 		//load checkpoints
-		cp1 = new ImageIcon("assets/images/cp1.png").getImage();
-		cp2 = new ImageIcon("assets/images/cp2.png").getImage();
-
+		cpRed = new ImageIcon("assets/images/cp1.png").getImage();
+		cpBlue = new ImageIcon("assets/images/cp2.png").getImage();
 		//load ufo
 		Image ufoImg = new ImageIcon("assets/images/ufo.png").getImage();
 		ufo = new UFO(6710, 460, 260, 190, ufoImg);
 
 		//load alien
 		loadLevel(1);
-		
-		
+
+
 	}
 
 	public int getElapsedTime() {
@@ -197,7 +202,7 @@ public class GamePanel extends JPanel {
 		offset = 0;
 
 		//reset ufo
-		ufo.x = 13150;
+		ufo.x = 18300;
 		ufo.y = 460;
 
 		//reset timer
@@ -291,16 +296,24 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
-		
+
 		int playerWorldX = player.x + offset;
-		if (playerWorldX >= cPoint2X && currentCP < 2){//checkpoint 2 mark
+		if (playerWorldX >= cPoint4X && currentCP < 4){//checkpoint 4 mark
+			currentCP = 4;
+		}
+		else if (playerWorldX >= cPoint3X && currentCP < 3){//checkpoint 3 mark
+			currentCP = 3;
+		}
+
+		else if (playerWorldX >= cPoint2X && currentCP < 2){//checkpoint 2 mark
 			currentCP = 2;
 		}
-		
+
+
 		if (player.x <=-150){//if player is too far into space on left
 			voided = true;
 		}
-		
+
 		//void detection ground
 		int groundY = 800;
 		if (!player.onGround){
@@ -315,43 +328,51 @@ public class GamePanel extends JPanel {
 
 		//CHECKPOINT LOGIC W/ RESPAWNING
 		if (voided == true){
-		    hearts--;
-		    
-		    if (hearts <= 0){//no hearts left
-		        endGame("gameOver");
-		        return;
-		    }
-		    
-		    //respawning based off camera
-		    int respawnX = 0;
-		    int respawnY = 500;
-		    
-		    if (currentCP == 1){//first checkpoint
-		    	respawnX = cPoint1X;
-		        respawnY = cPoint1Y;
-		    }
-		    else if (currentCP == 2){//second checkppoint
-		    	respawnX = cPoint2X;
-		        respawnY = cPoint2Y;
-		    }
+			hearts--;
 
-		    int oldOffset = offset;//reset offset
-		    offset = respawnX;//new player spawning point
-		    int shiftWorld = oldOffset - offset;//shifting world based off respawn and offset
+			if (hearts <= 0){//no hearts left
+				endGame("gameOver");
+				return;
+			}
 
-		    //shifting objects back
-		    for (Platform p : platforms){
-		        p.x += shiftWorld;
-		    }
-		    ufo.x += shiftWorld;
-		    bgX += shiftWorld;
+			//respawning based off camera
+			int respawnX = 0;
+			int respawnY = 500;
 
-		    //placing player back on the screen
-		    player.x = respawnX - offset + 100;//bit more forward so not touching left
-		    player.y = respawnY;
-		    player.velocity = 0;
-		    voided = false;
-		    return;
+			if (currentCP == 1){//first checkpoint
+				respawnX = cPoint1X;
+				respawnY = cPoint1Y;
+			}
+			else if (currentCP == 2){//second checkppoint
+				respawnX = cPoint2X;
+				respawnY = cPoint2Y;
+			}
+			else if (currentCP == 3){//third checkppoint
+				respawnX = cPoint3X;
+				respawnY = cPoint3Y;
+			}
+			else if (currentCP == 4){//fourth checkppoint
+				respawnX = cPoint4X;
+				respawnY = cPoint4Y;
+			}
+
+			int oldOffset = offset;//reset offset
+			offset = respawnX;//new player spawning point
+			int shiftWorld = oldOffset - offset;//shifting world based off respawn and offset
+
+			//shifting objects back
+			for (Platform p : platforms){
+				p.x += shiftWorld;
+			}
+			ufo.x += shiftWorld;
+			bgX += shiftWorld;
+
+			//placing player back on the screen
+			player.x = respawnX - offset + 100;//bit more forward so not touching left
+			player.y = respawnY;
+			player.velocity = 0;
+			voided = false;
+			return;
 		}//end of voiding
 
 		// alien spawn
@@ -453,7 +474,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void loadLevel1() {
-		
+
 		// SECTION 1 — CHECKPOINT 1 SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -464,7 +485,7 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(1720, 500, 150, 160, tallPlatform));
 		platforms.add(new Platform(2200, 500, 150, 160, tallPlatform));
 
-		// SECTION 3 — MIDAIR LONG PLATFORM
+		// SECTION 3 — MIDAIR LONG
 		platforms.add(new Platform(2560, 528, 400, 180, longPlatform));
 		platforms.add(new Platform(2958, 528, 400, 180, longPlatform));
 
@@ -473,41 +494,59 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(4056, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4454, 638, 400, 180, longPlatform));
 
-		// SECTION 5 — MID‑AIR RUN SHORT
+		// SECTION 5 — MIDAIR RUN SHORT
 		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
 		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
 
-		// SECTION 6 — CHECKPOINT 3 FLOOR PLATFORM
+		// SECTION 6 — FLOOR PLATFORM
 		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
-		
+
 		// SECTION 7 — TALL CLUSTER 1
-		platforms.add(new Platform(7000, 520, 150, 160, tallPlatform));
-		platforms.add(new Platform(7450, 470, 150, 160, tallPlatform));
-		platforms.add(new Platform(7900, 500, 150, 160, tallPlatform));
+		platforms.add(new Platform(7300, 540, 150, 160, tallPlatform));
+		platforms.add(new Platform(7800, 480, 150, 160, tallPlatform));
 
-		// SECTION 8 — MID‑AIR RUN 1
-		platforms.add(new Platform(8400, 570, 400, 180, longPlatform));
-		platforms.add(new Platform(9000, 540, 400, 180, longPlatform));
+		// SECTION 8 — CHECKPOINT FLOOR
+		platforms.add(new Platform(8300, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(8700, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(9100, 638, 400, 180, longPlatform));
 
-		// SECTION 9 — TALL CLUSTER 2
-		platforms.add(new Platform(9500, 515, 150, 160, tallPlatform));
-		platforms.add(new Platform(9950, 460, 150, 160, tallPlatform));
-		platforms.add(new Platform(10400, 500, 150, 160, tallPlatform));
+		// SECTION 9 — MID‑AIR RUN 1 (3‑long extended)
+		platforms.add(new Platform(9600, 600, 400, 180, longPlatform));
+		platforms.add(new Platform(10000, 600, 400, 180, longPlatform));
+		platforms.add(new Platform(10400, 600, 400, 180, longPlatform));
 
-		// SECTION 10 — MID‑AIR RUN 2
-		platforms.add(new Platform(10950, 560, 400, 180, longPlatform));
-		platforms.add(new Platform(11650, 545, 400, 180, longPlatform));
+		// SECTION 10 — TALL CLUSTER 2
+		platforms.add(new Platform(10900, 530, 150, 160, tallPlatform));
+		platforms.add(new Platform(11400, 470, 150, 160, tallPlatform));
 
-		// SECTION 11 — FINAL FLOOR (4 PIECES)
-		platforms.add(new Platform(12150, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(12550, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(12950, 638, 400, 180, longPlatform));
-		platforms.add(new Platform(13350, 638, 400, 180, longPlatform));
+		// SECTION 11 — MID‑AIR RUN 2 (2‑long)
+		platforms.add(new Platform(11900, 580, 400, 180, longPlatform));
+		platforms.add(new Platform(12400, 580, 400, 180, longPlatform));
 
+		// SECTION 12 — CHECKPOINT FLOOR
+		platforms.add(new Platform(12900, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(13300, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(13700, 638, 400, 180, longPlatform));
 
+		// SECTION 13 — TALL CLUSTER 3
+		platforms.add(new Platform(14200, 520, 150, 160, tallPlatform));
+		platforms.add(new Platform(14700, 490, 150, 160, tallPlatform));
 
+		// SECTION 14 — MID‑AIR RUN 3 (3‑long extended)
+		platforms.add(new Platform(15200, 600, 400, 180, longPlatform));
+		platforms.add(new Platform(15600, 600, 400, 180, longPlatform));
+		platforms.add(new Platform(16000, 600, 400, 180, longPlatform));
+
+		// SECTION 15 — TALL CLUSTER 4
+		platforms.add(new Platform(16500, 530, 150, 160, tallPlatform));
+		platforms.add(new Platform(17000, 470, 150, 160, tallPlatform));
+
+		// SECTION 16 — FINAL FLOOR EXTENSION
+		platforms.add(new Platform(17500, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(17900, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(18300, 638, 400, 180, longPlatform));
 	}
 
 	private void loadLevel2() {
@@ -549,12 +588,12 @@ public class GamePanel extends JPanel {
 
 		// SECTION 7 — LONG RUNWAY
 		platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
-		
+
 		platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
-		
+
 		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
-		
-		
+
+
 		// SECTION 8 — EXTENDED HIGHWAY
 		platforms.add(new Platform(10000, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
@@ -637,11 +676,11 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(8800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
-		
+
 		platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(10800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(11200, 638, 400, 180, longPlatform));
-		
+
 		// SECTION 10 — CHAOTIC MID-AIR MIX
 		platforms.add(new Platform(11600, 520, 300, 160, longPlatform));
 		platforms.add(new Platform(12000, 460, 150, 160, tallPlatform));
@@ -683,7 +722,7 @@ public class GamePanel extends JPanel {
 		// SECTION 18 — SHORT FINAL RUNWAY (just enough for UFO)
 		platforms.add(new Platform(20200, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(20600, 638, 400, 180, longPlatform));
-		
+
 	}
 
 
@@ -707,11 +746,15 @@ public class GamePanel extends JPanel {
 		//checkpoint images x values
 		int cp1X = (cPoint1X + 50) - offset;
 		int cp2X = cPoint2X - offset;
+		int cp3X = cPoint3X - offset;
+		int cp4X = cPoint4X - offset;
 
 		//checkpoint flags
-		g.drawImage(cp1, cp1X, cPoint1Y, 100, 150, null);
-		g.drawImage(cp2, cp2X, cPoint2Y, 100, 150, null);
-		
+		g.drawImage(cpRed, cp1X, cPoint1Y, 100, 150, null);
+		g.drawImage(cpBlue, cp2X, cPoint2Y, 100, 150, null);
+		g.drawImage(cpRed, cp3X, cPoint3Y, 100, 150, null);
+		g.drawImage(cpBlue, cp4X, cPoint4Y, 100, 150, null);
+
 		//platforms
 		for (Platform p : platforms){
 			p.draw(g);
