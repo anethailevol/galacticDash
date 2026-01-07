@@ -197,7 +197,7 @@ public class GamePanel extends JPanel {
 		offset = 0;
 
 		//reset ufo
-		ufo.x = 6710;
+		ufo.x = 13150;
 		ufo.y = 460;
 
 		//reset timer
@@ -476,10 +476,37 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(5000, 460, 150, 160, tallPlatform));
 		platforms.add(new Platform(5500, 600, 150, 160, tallPlatform));
 
-		// SECTION 6 — ENDING UFO PLATFORM
+		// SECTION 6 — CHECKPOINT 3 FLOOR PLATFORM
 		platforms.add(new Platform(5800, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6198, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(6596, 638, 400, 180, longPlatform));
+		
+		// SECTION 7 — TALL CLUSTER 1
+		platforms.add(new Platform(7000, 520, 150, 160, tallPlatform));
+		platforms.add(new Platform(7450, 470, 150, 160, tallPlatform));
+		platforms.add(new Platform(7900, 500, 150, 160, tallPlatform));
+
+		// SECTION 8 — MID‑AIR RUN 1
+		platforms.add(new Platform(8400, 570, 400, 180, longPlatform));
+		platforms.add(new Platform(9000, 540, 400, 180, longPlatform));
+
+		// SECTION 9 — TALL CLUSTER 2
+		platforms.add(new Platform(9500, 515, 150, 160, tallPlatform));
+		platforms.add(new Platform(9950, 460, 150, 160, tallPlatform));
+		platforms.add(new Platform(10400, 500, 150, 160, tallPlatform));
+
+		// SECTION 10 — MID‑AIR RUN 2
+		platforms.add(new Platform(10950, 560, 400, 180, longPlatform));
+		platforms.add(new Platform(11650, 545, 400, 180, longPlatform));
+
+		// SECTION 11 — FINAL FLOOR (4 PIECES)
+		platforms.add(new Platform(12150, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(12550, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(12950, 638, 400, 180, longPlatform));
+		platforms.add(new Platform(13350, 638, 400, 180, longPlatform));
+
+
+
 	}
 
 	private void loadLevel2() {
