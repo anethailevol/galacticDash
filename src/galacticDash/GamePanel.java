@@ -82,7 +82,7 @@ public class GamePanel extends JPanel {
 
 		if (level == 2) {
 			loadLevel2();
-			scrollSpeed = 10;      
+			scrollSpeed = 8;      
 			alienSpawnRate = 0; 
 			asteroidSpawnRate = 150;
 			//checkpoint 2
@@ -93,7 +93,7 @@ public class GamePanel extends JPanel {
 		if (level == 3) {
 			loadLevel3();
 			scrollSpeed = 15;
-			alienSpawnRate = 100; // aliens every ~3 seconds
+			alienSpawnRate = 150;
 			asteroidSpawnRate = 120;
 			//checkpoint 2
 			cPoint2X = 4300;
@@ -354,7 +354,7 @@ public class GamePanel extends JPanel {
 		    return;
 		}//end of voiding
 
-		// alien spawn: only when a positive spawn rate is set for the level
+		// alien spawn
 		if (alienSpawnRate > 0) {
 			alienSpawnTimer++;
 			if (alienSpawnTimer >= alienSpawnRate) {
@@ -440,7 +440,7 @@ public class GamePanel extends JPanel {
 	private void spawnAlien() {
 		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
 		int startY = (int)(Math.random()*(500-100-1)+100); 
-		Alien a = new Alien(startX, startY, 6);
+		Alien a = new Alien(startX, startY, 5);
 		//a.y = startY - a.height;
 		aliens.add(a);
 	}
@@ -453,6 +453,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void loadLevel1() {
+		
 		// SECTION 1 — CHECKPOINT 1 SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
