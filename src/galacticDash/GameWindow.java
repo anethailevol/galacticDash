@@ -27,6 +27,7 @@ public class GameWindow extends JFrame  {
 	//game window constructor
 	public GameWindow() {
 
+		//window details
 		setTitle("Galactic Dash");
 		setSize(1500, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,6 +52,7 @@ public class GameWindow extends JFrame  {
 		//game win screen
 		gameWinPanel = new GameWinScreen(this);
 
+		//adding panels to main panel
 		mainPanel.add(startScreen, "start");
 		mainPanel.add(gamePanel, "game");
 		mainPanel.add(levelsPanel, "levels");
@@ -61,7 +63,10 @@ public class GameWindow extends JFrame  {
 		setVisible(true);
 	}
 
-
+	/* PURPOSE: to show screen depending on outcome
+	 * PRE: String name - name of screen
+	 * POST: n/a - shows screen
+	 */
 	public void showScreen(String name){
 	    cardLayout.show(mainPanel, name);
 
@@ -76,27 +81,50 @@ public class GameWindow extends JFrame  {
 	    }
 	}//end of showScreen
 
-
+/* PURPOSE: to set the timer
+ * PRE: int time
+ * POST: n/a - sets time - int finalTime
+ */
 	public void setTimer(int time){
 		this.finalTime = time;//final time for gameplay
 	}//end of setTime
 
+	/* PURPOSE: to set the number of final hearts
+	 * PRE: int hearts
+	 * POST: n/a - sets hearts - int hearts
+	 */
 	public void setFinalHearts(int hearts) {
 		this.finalHearts = hearts;
 	}
 
+	/* PURPOSE: to return number of ifnal hearts
+	 * PRE: n/a
+	 * POST: return final hearts - int finalHearts
+	 */
 	public int getFinalHearts() {
 		return finalHearts;
 	}
 
+	/* PURPOSE: to return final time
+	 * PRE: n/a
+	 * POST: reeturn final time - int finalTime
+	 */
 	public int getTimer() {
 		return finalTime;//return final time
 	}
 
+	/* PURPOSE: to set current level number
+	 * PRE: int level
+	 * POST: n/a - sets level number
+	 */
 	public void setCurrentLevel(int level) {
 		this.currentLevel = level;//current level
 	}
 
+	/* PURPOSE: to return current level number
+	 * PRE: n/a
+	 * POST: returns current level number - int currentLevel
+	 */
 	public int getCurrentLevel() {
 		return currentLevel;//return current level
 	}

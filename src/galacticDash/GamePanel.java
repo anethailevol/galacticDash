@@ -67,6 +67,10 @@ public class GamePanel extends JPanel {
 	private int cPoint4X;
 	private int cPoint4Y = 500;
 
+	/* PURPOSE: to load the level depending on current level
+	 * PRE: int level
+	 * POST: n/a
+	 */
 	public void loadLevel(int level) {
 		this.currentLevel = level;
 
@@ -157,10 +161,18 @@ public class GamePanel extends JPanel {
 
 	}
 
+	/* PURPOSE: to return elapsed gameplay time
+	 * PRE: n/a
+	 * POST: return elapsedTime
+	 */
 	public int getElapsedTime() {
 		return elapsedTime;//return elapsed time
 	}
 
+	/* PURPOSE: to start the game after menu screen
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	public void startGame() {
 		resetGame();
 		loadLevel(currentLevel);
@@ -169,6 +181,10 @@ public class GamePanel extends JPanel {
 		requestFocusInWindow();
 	}
 
+	/* PURPOSE: to end the game, resetting some variables
+	 * PRE: String screen - show game over or game win
+	 * POST: n/a
+	 */
 	public void endGame(String screen) {
 		timer.stop();
 		timeElapsedTimer.stop();
@@ -183,6 +199,10 @@ public class GamePanel extends JPanel {
 
 	}
 
+	/* PURPOSE: to reset variables in game
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	public void resetGame() {
 		//reset player positions, etc.
 		player.x = 200;
@@ -223,6 +243,10 @@ public class GamePanel extends JPanel {
 	}//end of reset
 
 
+	/* PURPOSE: to update the game, main logic for game
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	public void update() {
 		if (input.menu){//if menu clicked
 			endGame("start");
@@ -462,6 +486,10 @@ public class GamePanel extends JPanel {
 
 	}//end of update
 
+	/* PURPOSE: to spawn aliens
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	private void spawnAlien() {
 		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
 		int startY = (int)(Math.random()*(500-100-1)+100); 
@@ -470,6 +498,10 @@ public class GamePanel extends JPanel {
 		aliens.add(a);
 	}
 
+	/* PURPOSE: to spawn asteroids
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	private void spawnAsteroid() {
 		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
 		int startY = 200; // fixed height; adjust if you want different lanes
@@ -477,6 +509,10 @@ public class GamePanel extends JPanel {
 		asteroids.add(ast);
 	}
 
+	/* PURPOSE: to load level 1 objects
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	private void loadLevel1() {
 
 		// SECTION 1 — CHECKPOINT 1 SAFE START
@@ -554,9 +590,14 @@ public class GamePanel extends JPanel {
 		platforms.add(new Platform(18700, 638, 400, 180, longPlatform));
 	}
 
+	/* PURPOSE: to load level 2 objects
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	private void loadLevel2() {
 		
-		ufo.x = 18600;		
+		ufo.x = 18600;//new ufo spot
+		
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -633,9 +674,14 @@ public class GamePanel extends JPanel {
 
 	}
 
+	/* PURPOSE: to load level 3 objects
+	 * PRE: n/a
+	 * POST: n/a
+	 */
 	private void loadLevel3() {
 
-		ufo.x = 20900;
+		ufo.x = 20900;//new ufo spot
+		
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -728,7 +774,10 @@ public class GamePanel extends JPanel {
 	}
 
 
-	//PAINT COMPONENT
+	/* PURPOSE: to draw graphics in game
+	 * PRE: Graphics g
+	 * POST: n/a
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Font pixelFont;//main game font

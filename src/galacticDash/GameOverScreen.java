@@ -11,9 +11,10 @@ import javax.swing.*;
  */
 public class GameOverScreen extends JPanel {
 	
-	private Image gameOverbg;
+	private Image gameOverbg;//bg
 	private GameWindow window;//reference main window
 
+	//constructor
 	public GameOverScreen(GameWindow window) {
 		this.window = window;
 		setLayout(null);
@@ -76,6 +77,10 @@ public class GameOverScreen extends JPanel {
 
 	}
 
+	/* PURPOSE: to draw graphics
+	 * PRE: Graphics comp
+	 * POST: n/a
+	 */
 	public void paintComponent(Graphics comp) {
 		super.paintComponent(comp);
 		Graphics2D comp2D = (Graphics2D) comp;
@@ -100,6 +105,7 @@ public class GameOverScreen extends JPanel {
 		int seconds = totalSeconds%60;
 		String timeString = String.format("%02d:%02d", minutes, seconds);
 		
+		//time appearance
 		comp.setColor(Color.WHITE);
 		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 30f));
 		comp.drawString("Time: " + timeString, 300, 350);
