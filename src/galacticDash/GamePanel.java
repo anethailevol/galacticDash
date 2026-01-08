@@ -485,7 +485,7 @@ public class GamePanel extends JPanel {
 
 	private void loadLevel2() {
 
-		ufo.x = 20000;		
+		ufo.x = 18500;		
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -527,14 +527,14 @@ public class GamePanel extends JPanel {
 		
 		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
 		
-		
+	
 		// SECTION 8 — EXTENDED HIGHWAY
 		platforms.add(new Platform(10000, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(10400, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(10800, 638, 400, 180, longPlatform));
 
 		// SECTION 9 — MID‑AIR + TALL MIX
-		platforms.add(new Platform(11200, 560, 300, 160, longPlatform));
+		platforms.add(new Platform(11300, 560, 200, 160, longPlatform));
 		platforms.add(new Platform(11600, 500, 150, 160, tallPlatform));
 		platforms.add(new Platform(11900, 560, 300, 160, longPlatform));
 
@@ -567,7 +567,7 @@ public class GamePanel extends JPanel {
 
 	private void loadLevel3() {
 
-		ufo.x = 11500;
+		ufo.x = 20800;
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));

@@ -2,6 +2,7 @@ package galacticDash;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.*;
 /*
  * Athena Arun, Mithushaa Rajakumar
@@ -13,9 +14,13 @@ public class GameOverScreen extends JPanel {
 	
 	private Image gameOverbg;
 	private GameWindow window;//reference main window
+	private Leaderboard leaderboard;
+	private String playerRateText = "";
+	private List<String> topEntries = null;
 
 	public GameOverScreen(GameWindow window) {
 		this.window = window;
+		leaderboard = new Leaderboard("assets/leaderboard.txt");
 		setLayout(null);
 		setBackground(Color.BLACK);//temp colour
 		gameOverbg = new ImageIcon("assets/images/gameOverbg.gif").getImage();
@@ -74,6 +79,18 @@ public class GameOverScreen extends JPanel {
 		});
 		
 
+		// expose update hook for when the panel is shown
+	}
+
+	public void updateForGameOver() {
+		int finalHearts = window.getFinalHearts();
+		String name = JOptionPane.showInputDialog(this, "Enter your name for the leaderboard:", "Player");
+		if (name == null || name.trim().isEmpty()) name = "Player";
+		leaderboard.update(name, finalHearts);
+		double rate = leaderboard.getSuccessRate(name);
+		playerRateText = String.format("%s Success: %.1f%%", name, rate * 100.0);
+		topEntries = leaderboard.topEntries(5);
+		repaint();
 	}
 
 	public void paintComponent(Graphics comp) {
@@ -112,6 +129,24 @@ public class GameOverScreen extends JPanel {
 		for (int i = 0; i < 3; i++) {
 			Image heartImg = new ImageIcon(i < finalHearts ? "assets/images/heart.png" : "assets/images/deadheart.png").getImage();
 			comp.drawImage(heartImg, startX + i * (heartSize + 10), y, heartSize, heartSize, null);
+		}
+
+		// draw player success text if available
+		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 24f));
+		if (playerRateText != null && !playerRateText.isEmpty()) {
+			comp.drawString(playerRateText, 300, 520);
+		}
+
+		// draw top leaderboard entries
+		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
+		if (topEntries != null) {
+			int ty = 560;
+			comp.drawString("Leaderboard:", 300, ty);
+			ty += 30;
+			for (String s : topEntries) {
+				comp.drawString(s, 320, ty);
+				ty += 26;
+			}
 		}
 
 	}//end of paintComponent

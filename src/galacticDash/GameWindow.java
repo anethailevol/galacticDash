@@ -1,6 +1,6 @@
 package galacticDash;
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 /* Athena Arun, Mithushaa Rajakumar
  * ICS4U1
  * January 12, 2025
@@ -74,6 +74,10 @@ public class GameWindow extends JFrame  {
 	    if (name.equals("gameOver") || name.equals("gameWin")) {
 	        setTimer(gamePanel.getElapsedTime());
 	    }
+
+		if ("gameOver".equals(name)) {
+			gameOverPanel.updateForGameOver();
+		}
 	}//end of showScreen
 
 
