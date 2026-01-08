@@ -12,15 +12,14 @@ import javax.swing.*;
  */
 public class GameOverScreen extends JPanel {
 	
-	private Image gameOverbg;
+	private Image gameOverbg;//bg
 	private GameWindow window;//reference main window
-	private Leaderboard leaderboard;
 	private String playerRateText = "";
 	private List<String> topEntries = null;
 
+	//constructor
 	public GameOverScreen(GameWindow window) {
 		this.window = window;
-		leaderboard = new Leaderboard("assets/leaderboard.txt");
 		setLayout(null);
 		setBackground(Color.BLACK);//temp colour
 		gameOverbg = new ImageIcon("assets/images/gameOverbg.gif").getImage();
@@ -84,15 +83,13 @@ public class GameOverScreen extends JPanel {
 
 	public void updateForGameOver() {
 		int finalHearts = window.getFinalHearts();
-		String name = JOptionPane.showInputDialog(this, "Enter your name for the leaderboard:", "Player");
-		if (name == null || name.trim().isEmpty()) name = "Player";
-		leaderboard.update(name, finalHearts);
-		double rate = leaderboard.getSuccessRate(name);
-		playerRateText = String.format("%s Success: %.1f%%", name, rate * 100.0);
-		topEntries = leaderboard.topEntries(5);
 		repaint();
 	}
 
+	/* PURPOSE: to draw graphics
+	 * PRE: Graphics comp
+	 * POST: n/a
+	 */
 	public void paintComponent(Graphics comp) {
 		super.paintComponent(comp);
 		Graphics2D comp2D = (Graphics2D) comp;
@@ -117,6 +114,7 @@ public class GameOverScreen extends JPanel {
 		int seconds = totalSeconds%60;
 		String timeString = String.format("%02d:%02d", minutes, seconds);
 		
+		//time appearance
 		comp.setColor(Color.WHITE);
 		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 30f));
 		comp.drawString("Time: " + timeString, 300, 350);
@@ -131,23 +129,6 @@ public class GameOverScreen extends JPanel {
 			comp.drawImage(heartImg, startX + i * (heartSize + 10), y, heartSize, heartSize, null);
 		}
 
-		// draw player success text if available
-		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 24f));
-		if (playerRateText != null && !playerRateText.isEmpty()) {
-			comp.drawString(playerRateText, 300, 520);
-		}
-
-		// draw top leaderboard entries
-		comp.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
-		if (topEntries != null) {
-			int ty = 560;
-			comp.drawString("Leaderboard:", 300, ty);
-			ty += 30;
-			for (String s : topEntries) {
-				comp.drawString(s, 320, ty);
-				ty += 26;
-			}
-		}
 
 	}//end of paintComponent
 

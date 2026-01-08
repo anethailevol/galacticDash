@@ -14,6 +14,10 @@ public class Input implements KeyListener {
     public boolean pause;//esc key for pausing during game
     public boolean resume;//'R' key for resuming game
 
+    /* PURPOSE: to set which key was pressed
+	 * PRE: KeyEvent e - key pressed
+	 * POST: n/a
+	 */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();//key clicked
 
@@ -33,6 +37,10 @@ public class Input implements KeyListener {
             pause = true;
     }//end of key pressed
 
+    /* PURPOSE: to set which key was released
+	 * PRE: KeyEvent e - key released
+	 * POST: n/a
+	 */
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
 
@@ -52,8 +60,11 @@ public class Input implements KeyListener {
             pause = false;
     }//end of key released
 
-    public void keyTyped(KeyEvent e) {}//temp, required by interface
     
+    /* PURPOSE: to reset the keys pressed, back to false
+	 * PRE: n/a
+	 * POST: n/a
+	 */
     public void reset() {
         left = false;
         right = false;
@@ -61,5 +72,7 @@ public class Input implements KeyListener {
         pause = false;
         menu = false;
     }//end of reset
+    
+    public void keyTyped(KeyEvent e) {}//temp, required by interface
 
 }//end of class

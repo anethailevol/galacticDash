@@ -131,6 +131,10 @@ public class StartScreen extends JPanel{
 
 	}//end of startScreen
 
+	/* PURPOSE: to draw graphics
+	 * PRE: Graphics comp
+	 * POST: n/a
+	 */
 	public void paintComponent(Graphics comp) {
 		super.paintComponent(comp);
 		Graphics2D comp2D = (Graphics2D) comp;

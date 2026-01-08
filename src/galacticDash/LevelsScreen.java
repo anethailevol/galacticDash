@@ -14,6 +14,7 @@ public class LevelsScreen extends JPanel{
 	private GameWindow window;//reference main window
 	private ImageIcon bg;//background
 
+	//constructor
 	public LevelsScreen(GameWindow window) {
 		this.window = window;
 		setBackground(Color.BLACK);//temp colour
@@ -122,6 +123,10 @@ public class LevelsScreen extends JPanel{
 
 	}
 
+	/* PURPOSE: to draw graphics
+	 * PRE: Graphics comp
+	 * POST: n/a
+	 */
 	public void paintComponent(Graphics comp) {
 		super.paintComponent(comp);
 		Graphics2D comp2D = (Graphics2D) comp;

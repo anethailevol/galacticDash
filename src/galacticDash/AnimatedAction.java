@@ -9,10 +9,12 @@ import javax.swing.ImageIcon;
  */
 
 public class AnimatedAction {
-	int duration; 
-	Image animation;
+	int duration;//duration of animation
+	Image animation;//sprites
+	
+	//constructor
 	public AnimatedAction(String animation, int duration) {
 		this.duration = duration;
 		this.animation = new ImageIcon(animation).getImage();	
 	}
-}
+}//end of class

@@ -12,8 +12,10 @@ import java.util.HashMap;
 public class UnitBehaviour { 
 	HashMap<String, AnimatedAction> actions;
 	int flipWidth; 
+	
+	//constructor
 	UnitBehaviour(int flipWidth){
 		this.flipWidth = flipWidth;
 		actions = new HashMap<String, AnimatedAction>();
 	}
-}
+}//end of class
