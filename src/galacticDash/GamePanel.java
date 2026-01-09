@@ -32,7 +32,11 @@ public class GamePanel extends JPanel {
 	private int asteroidSpawnRate = 0;
 	private int asteroidSpawnTimer = 0;
 
-	//level
+	//extra lives (level 2 & 3)
+	private ArrayList<ExtraLife> eLives = new ArrayList<>();
+	private int eLifeSpawnRate = 0;
+	private int eLifeSpawnTimer = 0;
+
 	private int currentLevel = 1;
 
 	//elapsed time (for display)
@@ -95,6 +99,7 @@ public class GamePanel extends JPanel {
 			scrollSpeed = 8;      
 			alienSpawnRate = 0; 
 			asteroidSpawnRate = 150;
+			eLifeSpawnRate = 320;
 			//checkpoint 2
 			cPoint2X = 4600;
 			cPoint3X = 9200;
@@ -107,6 +112,7 @@ public class GamePanel extends JPanel {
 			scrollSpeed = 15;
 			alienSpawnRate = 110;
 			asteroidSpawnRate = 150;
+			eLifeSpawnRate = 170;
 			//checkpoint 2
 			cPoint2X = 4000;
 			cPoint3X = 8400;
@@ -143,7 +149,6 @@ public class GamePanel extends JPanel {
 		//load background:
 		bg = new ImageIcon("assets/images/gamebg.gif").getImage();
 
-
 		//load platforms
 		longPlatform = new ImageIcon("assets/images/longPlatform.png").getImage();
 		tallPlatform = new ImageIcon("assets/images/tallPlatform.png").getImage();
@@ -155,7 +160,7 @@ public class GamePanel extends JPanel {
 		Image ufoImg = new ImageIcon("assets/images/ufo.png").getImage();
 		ufo = new UFO(6710, 460, 260, 190, ufoImg);
 
-		//load alien
+		//load level 1
 		loadLevel(1);
 
 
@@ -240,6 +245,8 @@ public class GamePanel extends JPanel {
 		asteroids.clear();
 		asteroidSpawnTimer = 0;
 		hearts = 3;
+		//reset extra life
+		eLives.clear();
 	}//end of reset
 
 
@@ -421,6 +428,15 @@ public class GamePanel extends JPanel {
 			}
 		}
 
+		//extra life spawn
+		if (eLifeSpawnRate > 0) {
+			eLifeSpawnTimer++;
+			if (eLifeSpawnTimer >= eLifeSpawnRate) {
+				spawnExtraLife();
+				eLifeSpawnTimer = 0;
+			}
+		}
+
 		// update aliens
 		for (int i = aliens.size() - 1; i >= 0; i--) {
 			Alien a = aliens.get(i);
@@ -467,6 +483,23 @@ public class GamePanel extends JPanel {
 			}
 		}
 
+		// update extra lives
+		for (int i = eLives.size() - 1; i >= 0; i--) {
+			ExtraLife eLife = eLives.get(i);
+			eLife.update();
+			eLife.x -= scrollSpeed;
+
+			if (eLife.isOffScreen()) {
+				eLives.remove(i);
+				continue;
+			}
+
+			if (eLife.getBounds().intersects(player.getBounds()) && hearts < 3) {
+				hearts++;
+				eLives.remove(i);
+			}
+		}
+
 		//Scrolling mechanism
 		bgX -= scrollSpeed;
 		if (bgX <= -bg.getWidth(null)){
@@ -507,6 +540,17 @@ public class GamePanel extends JPanel {
 		int startY = 200; // fixed height; adjust if you want different lanes
 		Asteroid ast = new Asteroid(startX, startY, 6);
 		asteroids.add(ast);
+	}
+
+	/* PURPOSE: to spawn extra life
+	 * PRE: n/a
+	 * POST: n/a
+	 */
+	private void spawnExtraLife() {
+		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
+		int startY = (int)(Math.random()*(500-200-1)+200);//random spot
+		ExtraLife eLife = new ExtraLife(startX, startY, 12);
+		eLives.add(eLife);
 	}
 
 	/* PURPOSE: to load level 1 objects
@@ -595,9 +639,9 @@ public class GamePanel extends JPanel {
 	 * POST: n/a
 	 */
 	private void loadLevel2() {
-		
-		ufo.x = 18600;//new ufo spot
-		
+
+		ufo.x = 18590;//new ufo spot
+
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -634,7 +678,7 @@ public class GamePanel extends JPanel {
 
 		// SECTION 7 — CHECKPOINT 3 LONG RUNWAY
 		platforms.add(new Platform(8400, 638, 400, 180, longPlatform));
-		
+
 		platforms.add(new Platform(9200, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(9600, 638, 400, 180, longPlatform));
 
@@ -653,7 +697,7 @@ public class GamePanel extends JPanel {
 		// SECTION 10 — BIG GAP + RESCUE PLATFORM
 		platforms.add(new Platform(12500, 480, 150, 160, tallPlatform));
 		platforms.add(new Platform(12900, 638, 400, 180, longPlatform));
-		
+
 		// SECTION 11 — CHAOTIC MIDAIR RUN
 		platforms.add(new Platform(13400, 520, 300, 160, longPlatform));
 		platforms.add(new Platform(13800, 460, 150, 160, tallPlatform));
@@ -685,7 +729,7 @@ public class GamePanel extends JPanel {
 
 
 		ufo.x = 20900;//new ufo spot
-		
+
 		// SAFE START
 		platforms.add(new Platform(0, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(398, 638, 400, 180, longPlatform));
@@ -704,7 +748,7 @@ public class GamePanel extends JPanel {
 		// SECTION 4 — DOUBLE TOWER CLIMB
 		platforms.add(new Platform(3300, 480, 150, 160, tallPlatform));
 		platforms.add(new Platform(3600, 420, 150, 160, tallPlatform));
-		 
+
 		// SECTION 5 — CHECKPOINT 2 LONG HIGHWAY
 		platforms.add(new Platform(4000, 638, 400, 180, longPlatform));
 		platforms.add(new Platform(4400, 638, 400, 180, longPlatform));
@@ -820,6 +864,11 @@ public class GamePanel extends JPanel {
 		//player
 		player.draw(g);
 
+		// draw extra lives
+		for (ExtraLife eLife : eLives) {
+			eLife.draw(g);
+		}
+
 		// draw aliens
 		for (Alien a : aliens) {
 			a.draw(g);
@@ -829,6 +878,7 @@ public class GamePanel extends JPanel {
 		for (Asteroid ast : asteroids) {
 			ast.draw(g);
 		}
+
 
 		// draw hearts
 		for (int i = 0; i < 3; i++) {

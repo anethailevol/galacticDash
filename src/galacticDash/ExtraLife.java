@@ -5,26 +5,26 @@ import javax.swing.ImageIcon;
  * Athena Arun, Mithushaa Rajakumar
  * ICS4U1
  * January 12, 2025
- * Galactic Dash - Alien
+ * Galactic Dash - Extra Life
  */
 
-public class Alien {
+public class ExtraLife {
     public int x, y, width, height;//coordinates and dimensions
-    private Image img;//alien image
-    private int speed;//alien speed
+    private Image img;//image
+    private int speed;//speed
 
     //constructor
-    public Alien(int x, int y, int speed) {
-        this.img = new ImageIcon("assets/images/alien.gif").getImage();
+    public ExtraLife(int x, int y, int speed) {
+        this.img = new ImageIcon("assets/images/heart.png").getImage();
         this.x = x;
         this.y = y;
         this.speed = speed;
 
-        this.width = 100;
-        this.height = 150;
+        this.width = 32;
+        this.height = 32;
     }
 
-    /* PURPOSE: to update speed of alien
+    /* PURPOSE: to update speed of extra life
 	 * PRE: n/a
 	 * POST: n/a
 	 */
@@ -32,7 +32,7 @@ public class Alien {
         x -= speed;
     }
 
-    /* PURPOSE: to draw alien
+    /* PURPOSE: to draw extra life
 	 * PRE: Graphics g
 	 * POST: n/a
 	 */
@@ -40,7 +40,7 @@ public class Alien {
         g.drawImage(img, x, y, width, height, null);
     }
 
-    /* PURPOSE: to return bounds of alien
+    /* PURPOSE: to return bounds of extra life
 	 * PRE: n/a
 	 * POST: return rectangle bounds using x, y, width, height
 	 */
@@ -48,9 +48,9 @@ public class Alien {
         return new Rectangle(x, y, width, height);
     }
 
-    /* PURPOSE: to return alien off screen
+    /* PURPOSE: to return extra life off screen
    	 * PRE: n/a
-   	 * POST: return when alien is not on screen
+   	 * POST: return when extra life is not on screen
    	 */
     public boolean isOffScreen() {
         return x + width < 0;

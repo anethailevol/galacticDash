@@ -1,7 +1,12 @@
 package galacticDash;
-
 import java.awt.*;
 import javax.swing.ImageIcon;
+/*
+ * Athena Arun, Mithushaa Rajakumar
+ * ICS4U1
+ * January 12, 2025
+ * Galactic Dash - Asteroid
+ */
 
 public class Asteroid {
     public int x, y, width, height;
@@ -14,8 +19,8 @@ public class Asteroid {
         this.y = y;
         this.speed = speed;
 
-        this.width = 60;
-        this.height = 60;
+        this.width = 50;
+        this.height = 50;
     }
 
     public void update() {
