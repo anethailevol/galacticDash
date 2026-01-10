@@ -106,7 +106,7 @@ public class GamePanel extends JPanel {
 			loadLevel3();
 			scrollSpeed = 15;
 			alienSpawnRate = 110;
-			asteroidSpawnRate = 150;
+			asteroidSpawnRate = 200;
 			//checkpoint 2
 			cPoint2X = 4000;
 			cPoint3X = 8400;
@@ -271,7 +271,8 @@ public class GamePanel extends JPanel {
 
 
 		if (input.left) {
-			player.x -= 5;
+			if (currentLevel == 3) player.x -= 10;
+			else player.x -= 5;
 			player.setAction("run");
 		}
 
