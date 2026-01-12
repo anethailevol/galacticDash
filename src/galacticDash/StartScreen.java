@@ -103,12 +103,11 @@ public class StartScreen extends JPanel{
 
 		helpButton.addActionListener(e -> {
 			JDialog helpDialog = new JDialog(window, "Help", true);
-			helpDialog.setSize(500, 260);
+			helpDialog.setSize(500, 250);
 			JTextArea helpText = new JTextArea(
 					"\nInstructions:" +
 							"\nYou are an alien cat, trying to navigate through space!" +
 							"\nAvoid obstacles." +
-							"\nCollect stars!" +
 							"\nTry to beat all 3 levels!" +
 							"\n\nControls:" +
 							"\nUse arrow keys or AD to move left and right." +
