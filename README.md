@@ -10,6 +10,9 @@ https://docs.oracle.com/javase/tutorial/2d/text/fonts.html
 JOptionPane:
 https://www.geeksforgeeks.org/java/java-joptionpane/
 
+? Terminal Condition:
+https://www.w3schools.com/java/java_conditions_shorthand.asp
+
 Cat Gif:
 https://tenor.com/view/glorp-cat-alien-dance-gif-702725459712104069
 

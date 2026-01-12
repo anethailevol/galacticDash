@@ -120,7 +120,7 @@ public class GamePanel extends JPanel {
 			//Load Background
 		}
 	}
-
+												
 	//constructor
 	public GamePanel(GameWindow window){
 		this.window = window;
@@ -538,7 +538,9 @@ public class GamePanel extends JPanel {
 	 */
 	private void spawnAsteroid() {
 		int startX = (getWidth() > 0) ? getWidth() + 200 : 1500;
-		int startY = 200; // fixed height; adjust if you want different lanes
+		int min = 100;
+		int max = 200;
+		int startY = (int)(Math.random()*(max - min + 1) + min);
 		Asteroid ast = new Asteroid(startX, startY, 6);
 		asteroids.add(ast);
 	}
