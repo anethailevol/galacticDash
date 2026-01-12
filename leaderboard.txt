@@ -1,0 +1,6 @@
+noob:0
+pro:2
+hacker:3
+god:4
+demo:0
+

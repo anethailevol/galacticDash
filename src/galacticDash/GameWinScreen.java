@@ -13,6 +13,8 @@ public class GameWinScreen extends JPanel{
 
 	private Image gameWinbg;//bg
 	private GameWindow window;//reference main window
+	private JTextArea leaderboardArea;
+	private JScrollPane leaderboardScroll;
 	
 	//constructor
 	public GameWinScreen(GameWindow window) {
@@ -59,6 +61,54 @@ public class GameWinScreen extends JPanel{
 		levels.addActionListener(e -> {
 			window.showScreen("levels");
 		});
+
+		// Leaderboard display area (hidden by default) wrapped in a scroll pane
+		leaderboardArea = new JTextArea();
+		// make the text area read-only and visually transparent so it overlays nicely
+		leaderboardArea.setEditable(false);
+		leaderboardArea.setOpaque(false);
+		leaderboardArea.setForeground(Color.WHITE);
+		leaderboardArea.setFont(pixelFont.deriveFont(Font.PLAIN, 20f));
+		leaderboardArea.setLineWrap(true);
+		leaderboardArea.setWrapStyleWord(true);
+
+		// wrap the text area in a scroll pane so long leaderboards can scroll
+		leaderboardScroll = new JScrollPane(leaderboardArea);
+		leaderboardScroll.setOpaque(false);
+		leaderboardScroll.getViewport().setOpaque(false);
+		leaderboardScroll.setBorder(null);
+		// position at x = 800 per request
+		leaderboardScroll.setBounds(800, 320, 700, 300);
+		leaderboardScroll.setVisible(false);
+		add(leaderboardScroll);
+	}
+
+	/**
+	 * Populate leaderboard area when the win screen is shown.
+	 * Only shows the leaderboard when the player completed level 3.
+	 */
+	public void updateForGameWin() {
+		if (window.getCurrentLevel() == 3) {
+			// get aggregated top 5 entries from GameWindow
+			java.util.List<String> top = window.getTopLeaderboard(5);
+			// clear previous text
+			leaderboardArea.setText("");
+			if (top.isEmpty()) {
+				// no entries yet
+				leaderboardArea.append("No leaderboard entries yet.\n");
+			} else {
+				// append a small header then each leaderboard line
+				leaderboardArea.append("LEADERBOARD (Top 5)\n\n");
+				for (String s : top) leaderboardArea.append(s + "\n");
+			}
+			// ensure visible area shows the top
+			leaderboardArea.setCaretPosition(0);
+			// make the scroll pane visible
+			leaderboardScroll.setVisible(true);
+		} else {
+			// hide leaderboard when not level 3
+			leaderboardScroll.setVisible(false);
+		}
 	}
 
 
