@@ -1,12 +1,14 @@
 package galacticDash;
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import javax.swing.*;
 /* Athena Arun, Mithushaa Rajakumar
@@ -17,7 +19,7 @@ import javax.swing.*;
 
 //import java.awt.event.* ;
 
-public class GameWindow extends JFrame  {
+public class GameWindow extends JFrame {
 
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
@@ -33,7 +35,6 @@ public class GameWindow extends JFrame  {
 	private int finalHearts = 0; // store hearts left at end
 
 	private String playerName = "Player"; // stores the current player's name
-	private static final String LEADERBOARD_FILE = "leaderboard.txt";
 
 	//game window constructor
 	public GameWindow() {
@@ -94,19 +95,19 @@ public class GameWindow extends JFrame  {
 	 * PRE: String filePath - path to leaderboard file
 	 * POST: returns list of raw lines from file
 	 */
-	public List<String> readLeaderboard(String filePath) {
-		// legacy helper: read raw lines (kept for compatibility)
+	public List<String> readLeaderboard() throws IOException {
+		
 		List<String> entries = new ArrayList<>();
-		File file = new File(filePath);
-		if (!file.exists()) {
-			try { file.createNewFile(); } catch (IOException e) { e.printStackTrace(); return entries; }
-		}
-		try (Scanner sc = new Scanner(file)) {
+		
+		try (Scanner sc = new Scanner((new File("leaderboard.txt")))) {
+			
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine().trim();
 				if (!line.isEmpty()) entries.add(line);
 			}
-		} catch (IOException e) { e.printStackTrace(); }
+			
+		}
+		
 		return entries;
 	}
 
@@ -119,85 +120,115 @@ public class GameWindow extends JFrame  {
 	 * This intentionally only appends; aggregation across plays is done when
 	 * reading the leaderboard with Scanner.
 	 */
-	public void appendScore(String filePath, String name, int score) {
-		File file = new File(filePath);
-		try {
-			// ensure the leaderboard file exists before appending
-			if (!file.exists()) file.createNewFile();
-			// open the file for appending and write a single line "name:hearts"
-			try (PrintWriter pw = new PrintWriter(new FileWriter(file, true))) {
-				pw.println(name + ":" + score); // append one play result
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void appendScore(String name, int score) {
+		
+		try (FileWriter fw = new FileWriter("leaderboard.txt", true);
+		         PrintWriter pw = new PrintWriter(fw)) {
+
+		        pw.println(name + ":" + score);
+
+		 } catch (IOException e) {
+		        System.out.println("Unable to write to file: " + e.getMessage());
+		 }
+
+		
 	}
 
 	/**
-	 * Record this player's result for the play by appending a line.
+	 * Purpose: Record the player's result for the play by appending a line.
+	 * Pre: String name, int heartsThisPlay
+	 * Post: n/a
 	 */
 	public void recordPlayerResult(String name, int heartsThisPlay) {
 		// record this play by appending a line to the leaderboard file
-		appendScore(LEADERBOARD_FILE, name, heartsThisPlay);
+		appendScore(name, heartsThisPlay);
 	}
 
 	/**
 	 * Read the leaderboard file with Scanner and aggregate totals per player.
 	 * Returns top N strings formatted: "Rank. Name — X/Y (Z%)"
 	 */
-	public java.util.List<String> getTopLeaderboard(int n) {
-		// map will hold aggregated data per player: [totalHearts, plays]
-		java.util.Map<String, int[]> map = new HashMap<>();
-		java.util.List<String> out = new ArrayList<>();
-		File file = new File(LEADERBOARD_FILE);
-		if (!file.exists()) return out;
-		try (Scanner sc = new Scanner(file)) {
+	public List<String> getTopLeaderboard(int n) {
+		
+		Map<String, int[]> map = new HashMap<>();
+		
+		List<String> out = new ArrayList<>();
+		
+		
+		try (Scanner sc = new Scanner(new File("leaderboard.txt"))) {
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine().trim();
 				if (line.isEmpty()) continue;
 				String[] parts = line.split(":" );
+
 				if (parts.length >= 2) {
-					try {
-						// parse the hearts value from the line
 						int hearts = Integer.parseInt(parts[1]);
-						// get or create the aggregate array [totalHearts, plays]
 						int[] cur = map.getOrDefault(parts[0], new int[] {0,0});
-						cur[0] += hearts; // add this play's hearts to total
-						cur[1] += 1; // increment play count for this player
-						map.put(parts[0], cur); // store back in map
-					} catch (NumberFormatException e) { /* skip malformed */ }
+						cur[0] += hearts;
+						cur[1] += 1;
+						map.put(parts[0], cur);
 				}
 			}
-		} catch (IOException e) { e.printStackTrace(); }
+		} catch (FileNotFoundException e) {}
 
-		class Entry { String name; int total; int plays; double rate; }
-		java.util.List<Entry> list = new java.util.ArrayList<>();
-		// convert the aggregated map entries into sortable Entry objects
-		for (java.util.Map.Entry<String,int[]> e : map.entrySet()) {
-			Entry en = new Entry();
-			en.name = e.getKey();
-			en.total = e.getValue()[0]; // total hearts accumulated
-			en.plays = e.getValue()[1]; // number of plays
-			// success rate = total hearts / (plays * 3)
-			en.rate = (double)en.total / (en.plays * 3.0);
-			list.add(en);
+		class Entry {
+		    String name;
+		    int total;
+		    int plays;
+		    double rate;
+
+		    public Entry(String name, int total, int plays) {
+		        this.name = name;
+		        this.total = total;
+		        this.plays = plays;
+		        this.rate = (double) total / (plays * 3.0);
+		    }
+		}
+				
+		List<Entry> list = new ArrayList<>();
+
+		// turn the map into Entry objects
+		for (Map.Entry<String, int[]> e : map.entrySet()) {
+		    String name = e.getKey();
+		    int total = e.getValue()[0];
+		    int plays = e.getValue()[1];
+
+		    list.add(new Entry(name, total, plays));
 		}
 
-		list.sort((a,b) -> {
-			int cmp = Double.compare(b.rate, a.rate);
-			if (cmp != 0) return cmp;
-			return Integer.compare(b.total, a.total);
-		});
 
+		for (int i = 1; i < list.size(); i++) {
+
+		    Entry key = list.get(i); // assign key
+		    
+		    int j = i - 1;
+
+		    while (j >= 0) {
+		    	
+		    	//condition for hashmap
+		        boolean greater = (list.get(j).rate < key.rate) || (list.get(j).rate == key.rate && list.get(j).total < key.total);
+
+		        if (!greater) break;
+
+		        list.set(j + 1, list.get(j)); // assign
+		        j--;
+		    }
+
+		    list.set(j + 1, key); // assign
+		}
+		
 		int rank = 1;
-		// build the readable top-N strings with percentage and return
 		for (Entry e : list) {
-			if (rank > n) break; // stop after top-n
-			int possible = e.plays * 3; // max hearts possible across plays
-			int percentage = (int)Math.round(100.0 * e.total / possible); // as percent
-			out.add(rank + ". " + e.name + " — " + e.total + "/" + possible + " (" + percentage + "%)");
-			rank++;
+		    if (rank > n) break;
+
+		    int possible = e.plays * 3;
+		    int percentage = (int) Math.round(100.0 * e.total / possible);
+
+		    out.add(rank + ". " + e.name + " — " + e.total + "/" + possible + " (" + percentage + "%)");
+
+		    rank++;
 		}
+
 		return out;
 	}
 

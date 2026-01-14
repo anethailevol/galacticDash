@@ -104,8 +104,8 @@ public class GameOverScreen extends JPanel {
 		int finalHearts = window.getFinalHearts();
 		// show leaderboard when level 3 ended (fail or win)
 		if (window.getCurrentLevel() == 3) {
-			// get aggregated top 5 entries from GameWindow
-			java.util.List<String> top = window.getTopLeaderboard(5);
+			
+			List<String> top = window.getTopLeaderboard(5);
 			// clear previous text
 			leaderboardArea.setText("");
 			if (top.isEmpty()) {
@@ -116,9 +116,7 @@ public class GameOverScreen extends JPanel {
 				leaderboardArea.append("LEADERBOARD (Top 5)\n\n");
 				for (String s : top) leaderboardArea.append(s + "\n");
 			}
-			// ensure visible area shows the top
-			leaderboardArea.setCaretPosition(0);
-			// make the scroll pane visible
+			
 			leaderboardScroll.setVisible(true);
 		} else {
 			// hide leaderboard when not level 3
