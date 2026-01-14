@@ -84,8 +84,9 @@ public class GameWinScreen extends JPanel{
 	}
 
 	/**
-	 * Populate leaderboard area when the win screen is shown.
-	 * Only shows the leaderboard when the player completed level 3.
+	 * Purpose: Populate leaderboard area when the win screen is shown.
+	 * Pre: n/a
+	 * Post: n/a
 	 */
 	public void updateForGameWin() {
 		if (window.getCurrentLevel() == 3) {

@@ -115,11 +115,6 @@ public class GameWindow extends JFrame {
 	 * PRE: String filePath, String name, int score
 	 * POST: appends entry to file
 	 */
-	/**
-	 * Append a single play result as a line using PrintWriter: "name:hearts".
-	 * This intentionally only appends; aggregation across plays is done when
-	 * reading the leaderboard with Scanner.
-	 */
 	public void appendScore(String name, int score) {
 		
 		try (FileWriter fw = new FileWriter("leaderboard.txt", true);
@@ -145,8 +140,9 @@ public class GameWindow extends JFrame {
 	}
 
 	/**
-	 * Read the leaderboard file with Scanner and aggregate totals per player.
-	 * Returns top N strings formatted: "Rank. Name — X/Y (Z%)"
+	 * Purpose: Read the leaderboard file with Scanner and return totals per player.
+	 * Pre : int n
+	 * Post: List<String> out
 	 */
 	public List<String> getTopLeaderboard(int n) {
 		
@@ -170,7 +166,8 @@ public class GameWindow extends JFrame {
 				}
 			}
 		} catch (FileNotFoundException e) {}
-
+		
+		//member inner class for custom data type Entry
 		class Entry {
 		    String name;
 		    int total;
@@ -185,7 +182,7 @@ public class GameWindow extends JFrame {
 		    }
 		}
 				
-		List<Entry> list = new ArrayList<>();
+		List<Entry> list = new ArrayList<>(); //array list with custom data type entry
 
 		// turn the map into Entry objects
 		for (Map.Entry<String, int[]> e : map.entrySet()) {
@@ -195,8 +192,8 @@ public class GameWindow extends JFrame {
 
 		    list.add(new Entry(name, total, plays));
 		}
-
-
+		
+		//Insertion sort list
 		for (int i = 1; i < list.size(); i++) {
 
 		    Entry key = list.get(i); // assign key
@@ -261,10 +258,10 @@ public class GameWindow extends JFrame {
 		}
 	}//end of showScreen
 
-/* PURPOSE: to set the timer
- * PRE: int time
- * POST: n/a - sets time - int finalTime
- */
+	/* PURPOSE: to set the timer
+	 * PRE: int time
+	 * POST: n/a - sets time - int finalTime
+	 */
 	public void setTimer(int time){
 		this.finalTime = time;//final time for gameplay
 	}//end of setTime

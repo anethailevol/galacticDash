@@ -99,7 +99,12 @@ public class GameOverScreen extends JPanel {
 
 
 	}
-
+	
+	/**
+	 * Purpose: Populate leaderboard area when the game Over screen is shown.
+	 * Pre: n/a
+	 * Post: n/a
+	 */
 	public void updateForGameOver() {
 		int finalHearts = window.getFinalHearts();
 		// show leaderboard when level 3 ended (fail or win)
